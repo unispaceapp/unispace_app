@@ -34,7 +34,7 @@ public class ListAllClassrooms extends AppCompatActivity {
 
         URL url = null;
         try {
-            url = new URL("https://us-central1-unispace-198015.cloudfunctions.net/dailyDBUpdate");
+            url = new URL("https://us-central1-unispace-198015.cloudfunctions.net/requestAllClassrooms");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -98,7 +98,6 @@ public class ListAllClassrooms extends AppCompatActivity {
     }
     private class asyncTask extends AsyncTask<URL, Integer, String> {
         protected String doInBackground(URL... urls) {
-            TextView list = (TextView)findViewById(R.id.textView2);
             JSONObject s = getAllClassrooms();
             return s.toString();
         }
@@ -108,7 +107,7 @@ public class ListAllClassrooms extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
-            TextView list = (TextView)findViewById(R.id.textView2);
+            TextView list = (TextView)findViewById(R.id.listOfClassrooms);
             list.setText(result);
 
         }

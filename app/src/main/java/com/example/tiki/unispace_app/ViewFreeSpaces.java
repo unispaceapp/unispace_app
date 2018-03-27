@@ -1,9 +1,12 @@
 package com.example.tiki.unispace_app;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.StrictMode;
 import android.os.storage.StorageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +23,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.storage.StorageReference;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,16 +50,18 @@ public class ViewFreeSpaces extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_free_spaces);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(Intent.EXTRA_TEXT);
+        //Intent intent = getIntent();
+        //String message = intent.getStringExtra(Intent.EXTRA_TEXT);
         Button b = (Button)findViewById(R.id.allSpacesButton);
         b.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 enableStrictMode();
-
-                openActivity(view);
+                //TODO CHANGED HERE openActivity(view);
+                setContentView(R.layout.activity_list_all_classrooms);
+                asyncTask ay = new asyncTask();
+                ay.execute();
                 //final TextView textView = findViewById(R.id.textView);
                 //textView.setText(addMessage("asd").getResult());
 
@@ -60,19 +69,15 @@ public class ViewFreeSpaces extends AppCompatActivity {
         });
     }
 
-    public void openActivity(View view) {
-        Intent intent = new Intent(this, ListAllClassrooms.class);
-        //intent.putExtra(Intent.EXTRA_TEXT, tryit());
-        startActivity(intent);
-    }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private JSONArray getAllClassrooms() {
 
 
-    public String tryit() {
         URL url = null;
         try {
-            url = new URL("https://us-central1-unispace-198015.cloudfunctions.net/tryMongo");
+            url = new URL("https://us-central1-unispace-198015.cloudfunctions.net/requestAllClassrooms");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -114,29 +119,45 @@ public class ViewFreeSpaces extends AppCompatActivity {
             e.printStackTrace();
         }
         con.disconnect();
-        return content.toString();
+        System.out.println("*** CONTENT *** : " + content);
+        JSONArray jsonArr = null;
+        try {
+             jsonArr = new JSONArray(content.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("json: " + jsonArr);
+        return jsonArr;
 
     }
 
-    private Task<String> addMessage(String text) {
-        // Create the arguments to the callable function, which is just one string
-        Map<String, Object> data = new HashMap<>();
-        data.put("text", text);
-        mFunctions = FirebaseFunctions.getInstance();
-        return mFunctions
-                .getHttpsCallable("dailyDBUpdates")
-                .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        // This continuation runs on either success or failure, but if the task
-                        // has failed then getResult() will throw an Exception which will be
-                        // propagated down.
-                        String result = (String) task.getResult().getData();
-                        return result;
-                    }
-                });
+
+    private class asyncTask extends AsyncTask<URL, Integer, String> {
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        protected String doInBackground(URL... urls) {
+            JSONArray s = getAllClassrooms();
+            return s.toString();
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+            //setProgressPercent(progress[0]);
+        }
+
+        protected void onPostExecute(String result) {
+            TextView list = (TextView)findViewById(R.id.listOfClassrooms);
+            list.setText(result);
+
+        }
     }
+
+
+    public void openActivity(View view) {
+        Intent intent = new Intent(this, ListAllClassrooms.class);
+        //intent.putExtra(Intent.EXTRA_TEXT, tryit());
+        startActivity(intent);
+    }
+
 
     public void enableStrictMode()
     {

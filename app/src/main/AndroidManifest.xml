@@ -22,7 +22,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ViewFreeSpaces" />
-        <activity android:name=".ListAllClassrooms"></activity>
     </application>
 
 </manifest>

@@ -1,14 +1,5 @@
 package com.example.tiki.unispace_app;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
-import java.util.Map;
-
-/**
- * Created by Tiki on 3/27/18.
- */
-
 public class ClassroomObject {
 
     private int classroom;

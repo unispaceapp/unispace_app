@@ -3,35 +3,12 @@ package com.example.tiki.unispace_app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
-import com.google.firebase.storage.StorageReference;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private StorageReference s;
-    private FirebaseFunctions mFunctions;
-    private FirebaseHandler firebaseHandler;
-    private RecyclerView mRecyclerView;
-    private ClassAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    ArrayList<ClassroomObject> res;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 enableStrictMode();
                 setContentView(R.layout.bybuilding);
+                //final EditText et = (EditText)findViewById(R.id.building);
                 final Button b3 = (Button)findViewById(R.id.search);
                 b3.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -4,7 +4,7 @@ public class ClassroomObject {
 
     private int classroom;
     private String freeuntil;
-    private int icon;
+        private int icon;
     private int building;
 
 
@@ -44,6 +44,10 @@ public class ClassroomObject {
 
     public void TEST_CHANGE(String s) {
         this.freeuntil = s;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 
 

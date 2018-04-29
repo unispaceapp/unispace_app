@@ -1,5 +1,11 @@
 package com.example.tiki.unispace_app;
+import android.location.Location;
+
 import com.firebase.client.Firebase;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -10,6 +16,8 @@ import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,15 +26,33 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 public class FirebaseHandler {
 
-
     public FirebaseHandler() {
 
     }
+
+
+    public ArrayList<ClassroomObject> GetNearestClassrooms(Location location) {
+        StringBuffer response = GeneralRequest("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByBuilding",
+                "lat=" + location.getLatitude() + "&long=" + location.getLongitude());
+        System.out.println("*** RESPONSE *** " + response.toString());
+        JSONArray jsonAr = null;
+        JsonElement jsonArr = null;
+        try {
+            jsonArr = new JsonParser().parse(response.toString());
+
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println("*** JSONARRAY: *** " + jsonArr);
+        return convertJsonToObjects(jsonArr.getAsJsonObject());
+    }
+
 
     public ArrayList<ClassroomObject> GetClassroomsByBuilding(int buildingNum) {
         StringBuffer response = GeneralRequest("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByBuilding",
@@ -35,7 +61,6 @@ public class FirebaseHandler {
         JSONArray jsonAr = null;
         JsonElement jsonArr = null;
         try {
-            //jsonArr = new JSONArray(response.toString());
             jsonArr = new JsonParser().parse(response.toString());
 
         } catch (JsonParseException e) {
@@ -52,13 +77,7 @@ public class FirebaseHandler {
         System.out.println("*** RESPONSE *** " + response.toString());
         JSONArray jsonAr = null;
         JsonElement jsonArr = null;
-        //try {
-            //jsonArr = new JSONArray(response.toString());
             jsonArr = new JsonParser().parse(response.toString());
-
-        /*} catch (JSONException e) {
-            e.printStackTrace();
-        }*/
         System.out.println("*** JSONARRAY: *** " + jsonArr);
         return convertJsonToObjects(jsonArr.getAsJsonObject());
     }
@@ -152,4 +171,55 @@ public class FirebaseHandler {
 
         return allClasses;
     }*/
+
+    private void InitializeCoordinates() {
+
+//
+//        building_coordinates = new HashMap<>();
+//
+//        building_coordinates.put(100, new Coordinates(32.065480, 34.840948));
+//        building_coordinates.put(105, new Coordinates(32.066028, 34.841728));
+//        building_coordinates.put(109, new Coordinates(32.066514, 34.841721));
+//
+//        building_coordinates.put(201, new Coordinates(32.066496, 34.840938));
+//        building_coordinates['203'];
+//        building_coordinates['204'];
+//        building_coordinates['205'];
+//        building_coordinates['206'];
+//        building_coordinates['207'];
+//        building_coordinates['208'];
+//        building_coordinates['209'];
+//        building_coordinates['210'];
+//        building_coordinates['211'];
+//        building_coordinates['212'];
+//        building_coordinates['213'];
+//        building_coordinates['214'];
+//        building_coordinates['215'];
+//        building_coordinates['216'];
+//        building_coordinates['217'];
+//
+//
+//        building_coordinates.put(301, new Coordinates());
+//        building_coordinates.put(302, new Coordinates());
+//        building_coordinates.put(304, new Coordinates());
+//        building_coordinates.put(305, new Coordinates());
+//        building_coordinates.put(306, new Coordinates());
+//
+//
+//        building_coordinates.put(401, new Coordinates());
+//        building_coordinates.put(402, new Coordinates());
+//        building_coordinates.put(403, new Coordinates());
+//        building_coordinates.put(404, new Coordinates());
+//        building_coordinates.put(405, new Coordinates());
+//        building_coordinates.put(407, new Coordinates());
+//        building_coordinates.put(408, new Coordinates());
+//        building_coordinates.put(409, new Coordinates());
+//        building_coordinates.put(410, new Coordinates());
+//        building_coordinates.put(411, new Coordinates());
+
+
+
+
+
+    }
 }

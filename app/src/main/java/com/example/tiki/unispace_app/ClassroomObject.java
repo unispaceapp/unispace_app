@@ -8,11 +8,11 @@ public class ClassroomObject {
     private int building;
 
 
-    public ClassroomObject(int b, int c, String fr, int icon) {
+    public ClassroomObject(int b, int c, String fr) {
         this.building = b;
         this.classroom = c;
         this.freeuntil = fr;
-        this.icon = icon;
+        //this.icon = icon;
     }
 
     public void setFreeUntil(String freeUntil) {
@@ -35,8 +35,11 @@ public class ClassroomObject {
         this.classroom = classroom;
     }
 
+    public void setImageResource() {
+        //this.icon = R.drawable.ic_home_black_24dp;
+    }
     public int getImageResource() {
-        return icon;
+        return R.drawable.ic_home_black_24dp;
     }
     public String getFreeUntil() {
         return freeuntil;

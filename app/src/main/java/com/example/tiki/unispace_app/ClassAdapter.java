@@ -31,7 +31,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.classViewHol
 
         public classViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+            //imageView = itemView.findViewById(R.id.imageView);
             building = itemView.findViewById(R.id.building);
             classroom = itemView.findViewById(R.id.classroom);
             freeuntil = itemView.findViewById(R.id.freeuntil);
@@ -69,8 +69,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.classViewHol
         holder.classroom.setText(Integer.toString(currentClassroom.getClassroom()));
         holder.building.setText(Integer.toString(currentClassroom.getBuilding()));
         holder.freeuntil.setText(currentClassroom.getFreeUntil());
-        holder.imageView.setImageResource(currentClassroom.getImageResource());
-        holder.occupy.setImageResource(R.drawable.ic_weekend_black_24dp);
+        //holder.imageView.setImageResource(currentClassroom.getImageResource());
+        //holder.occupy.setImageResource(R.drawable.ic_weekend_black_24dp);
     }
 
     @Override

@@ -4,58 +4,149 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="4dp"
-    android:layout_marginBottom="4dp">
+    android:layout_marginBottom="4dp"
 
+    app:cardBackgroundColor="#35444444"
+    android:layout_margin="8dp"
+    >
+    <!--app:cardElevation="3dp"-->
 
 
     <RelativeLayout
-        android:background="@color/cardview_light_background"
+        android:background="#50fffaf0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp">
+        android:layout_margin="4dp"
+        >
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="2dp"
-            android:id="@+id/imageView" />
+        <!--<ImageView-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:padding="2dp"-->
+            <!--android:id="@+id/imageView" />-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/imageView"
-            android:text="Building 1"
+            android:fontFamily="@font/amiko"
+            android:text="Building:   "
             android:textSize="20sp"
             android:textStyle="bold"
-            android:id="@+id/building" />
+            android:textColor="@android:color/black"
+            android:layout_marginStart="8dp"
+            android:id="@+id/building_place"
+            android:padding="8dp"/>
+        <!--android:layout_toEndOf="@+id/imageView"-->
+
+        <TextView
+            android:id="@+id/building"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/amiko"
+            android:layout_toRightOf="@+id/building_place"
+            android:text="Test b"
+            android:textStyle="bold"
+            android:textColor="#F5F5DC"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:padding="8dp"
+            android:layout_marginStart="8dp"/>
+
+
+        <TextView
+            android:id="@+id/classroom_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/amiko"
+            android:layout_below="@+id/building"
+            android:text="Class:        "
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:layout_marginStart="8dp"/>
+
+
 
         <TextView
             android:id="@+id/classroom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/building"
-            android:layout_toEndOf="@+id/imageView"
-            android:text="Class"
-            android:textSize="15sp"
+            android:fontFamily="@font/amiko"
+            android:layout_toRightOf="@+id/classroom_place"
+            android:layout_below="@id/building"
+            android:text="Test c"
+            android:textStyle="bold"
+            android:textColor="	#F5F5DC"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:padding="8dp"
             android:layout_marginStart="8dp"/>
 
         <TextView
+            android:id="@+id/freeuntil_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="61dp"
-            android:layout_toEndOf="@+id/building"
-            android:text="free until"
-            android:textSize="15sp"
-            android:id="@+id/freeuntil"/>
+            android:fontFamily="@font/amiko"
+            android:layout_below="@+id/classroom_place"
+            android:text="Free Until:"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:padding="8dp"
+            android:layout_marginStart="8dp"/>
+
+
+        <TextView
+            android:id="@+id/freeuntil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/amiko"
+            android:layout_toRightOf="@+id/freeuntil_place"
+            android:layout_below="@id/classroom"
+            android:text="Test f"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="	#F5F5DC"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:layout_marginStart="8dp"/>
+
+
+
+        <!--<TextView-->
+            <!--android:id="@+id/freeuntil"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toEndOf="@id/freeuntil_place"-->
+            <!--android:layout_below="@id/classroom"-->
+            <!--android:text="testside"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="	#F5F5DC"-->
+            <!--android:textSize="20sp"-->
+            <!--/>-->
 
         <ImageView
             android:id="@+id/image_occupy"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            app:srcCompat="@drawable/ic_weekend_black_24dp" />
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="21dp"
+            android:src="@drawable/desk_worker"
+            />
+
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:fontFamily="@font/amiko"-->
+            <!--android:textColor="	#F5F5DC"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignBaseline="@+id/freeuntil"-->
+            <!--android:layout_alignBottom="@+id/freeuntil"-->
+            <!--android:layout_alignStart="@+id/image_occupy"-->
+            <!--android:layout_marginStart="17dp"-->
+            <!--android:text="Take!" />-->
     </RelativeLayout>
 </android.support.v7.widget.CardView>

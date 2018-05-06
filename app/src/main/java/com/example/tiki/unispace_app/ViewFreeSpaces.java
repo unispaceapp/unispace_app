@@ -94,6 +94,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
         String request = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (request.equals("ALL")) {
             classroomObjects = firebaseHandler.GetAllClassrooms();
+            //TODO parse request
         } else if (request.startsWith("BUILDING")) {
             classroomObjects = firebaseHandler.GetClassroomsByBuilding(Integer.parseInt(request));
         } else {
@@ -132,7 +133,8 @@ public class ViewFreeSpaces extends AppCompatActivity{
         DatabaseReference hoursRef = buildingRef.child(Integer.toString(occupiedClassroom.getClassroom()))
                 .child("hours");
         /* Adds a listener for when a 'hours' child is updated in Firebase DB */
-        //TODO: TASK 6 in onChildChange, change hour from current hour till 'free until' to '1' -- When classroom released, will convert back to '0' - Use value of current hour, if now its zero, means must convert hours back to zeros - otherwise, was just updated to '1'
+        //TODO: TASK 6 in onChildChange, change hour from current hour till 'free until' to '1' --
+        // When classroom released, will convert back to '0' - Use value of current hour, if now its zero, means must convert hours back to zeros - otherwise, was just updated to '1'
 //        ValueEventListener hoursListener = new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -153,6 +155,8 @@ public class ViewFreeSpaces extends AppCompatActivity{
         * in its list of free classrooms */
         hoursRef.child(hour).setValue(1);
         classroomObjects.get(currentPosition).TEST_CHANGE("OCCUPIED");
+        //classroomObjects.remove(currentPosition);
+        //mAdapter.notifyItemRemoved(currentPosition);
         mAdapter.notifyItemChanged(position);
         // TODO: TASK 8 (Open the new layout for classroom using occupied classroom info)
 

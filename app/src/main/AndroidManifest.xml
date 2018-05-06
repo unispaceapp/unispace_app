@@ -26,6 +26,10 @@
         <activity android:name=".ViewFreeSpaces" />
         <activity android:name=".LocationActivity" />
         <activity android:name=".SearchActivity"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

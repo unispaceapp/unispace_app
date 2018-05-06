@@ -40,6 +40,8 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher {
         Toast.makeText(this, "BEFORE", Toast.LENGTH_SHORT).show();
         Button buildingButton = (Button)findViewById(R.id.search);
         buildingButton.setEnabled(false);
+            buildingButton.getBackground().setAlpha(100);
+
     }
 
     @Override
@@ -47,6 +49,7 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher {
         if(buildings.contains(charSequence)){
             Button buildingButton = (Button)findViewById(R.id.search);
             buildingButton.setEnabled(true);
+            buildingButton.getBackground().setAlpha(255);
         }
 
     }
@@ -56,6 +59,7 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher {
         if(buildings.contains(editable.toString())){
             Button buildingButton = (Button)findViewById(R.id.search);
             buildingButton.setEnabled(true);
+            buildingButton.getBackground().setAlpha(255);
         }
     }
 
@@ -68,6 +72,7 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher {
         buildings.add("604");
         buildings.add("213");
         buildings.add("1004");
+        //TODO: Finish
 
 
     }

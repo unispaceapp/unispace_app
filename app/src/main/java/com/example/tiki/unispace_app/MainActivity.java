@@ -13,12 +13,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,12 +29,23 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity{
 
 
+    GridLayout mainGrid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button bt1 = (Button)findViewById(R.id.freeSpaceButton);
-        bt1.setOnClickListener(new View.OnClickListener() {
+
+
+         mainGrid = (GridLayout)findViewById(R.id.mainGrid);
+         setOnClickListeners();
+    }
+
+
+    public void setOnClickListeners() {
+
+        CardView item = (CardView)findViewById(R.id.all_classrooms_item);
+        item.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 enableStrictMode();
@@ -40,31 +53,38 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        Button buildButton = (Button)findViewById(R.id.byBuilding);
-        buildButton.setOnClickListener(new View.OnClickListener() {
+         item = (CardView)findViewById(R.id.search_by_building);
+        item.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                enableStrictMode();
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);
-
             }
-
         });
 
-        Button nearestButton = (Button)findViewById(R.id.nearestButton);
-        nearestButton.setOnClickListener(new View.OnClickListener() {
+        item = (CardView)findViewById(R.id.nearest);
+        item.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                enableStrictMode();
                 openActivity(view, "NEAREST");
             }
-
         });
+
+        item = (CardView)findViewById(R.id.view_current);
+        item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "NO CURRENT CLASSROOM TO DISPLAY", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
 
 
     }
-
 
     public void openActivity(View view, String request) {
         Intent intent = new Intent(this, ViewFreeSpaces.class);

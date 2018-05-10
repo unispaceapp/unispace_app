@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background2"
+    android:background="@color/cream"
     >
+
 
     <EditText
         android:id="@+id/building"
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="176dp"
         android:ems="7"
+        android:padding="10dp"
         android:inputType="textPersonName"
         android:hint="Insert Building"
         android:textSize="24sp"
@@ -23,25 +25,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <Button
         android:id="@+id/search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
-        android:background="@drawable/roundedbutton"
-        android:fontFamily="@font/amiko"
-        android:padding="10dp"
-        android:shadowColor="@android:color/black"
-        android:shadowDx="-5"
-        android:shadowDy="-5"
-        android:shadowRadius="4"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/button_with_green"
+        android:fontFamily="@font/bold_and_big"
+        android:padding="20dp"
         android:text="Search for Classes"
-        android:textColor="#33691E"
+        android:textColor="#444444"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/building" />
+        app:layout_constraintTop_toBottomOf="@+id/building"
+/>
 
 
 </android.support.constraint.ConstraintLayout>

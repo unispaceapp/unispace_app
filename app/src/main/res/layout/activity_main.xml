@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background2"
     android:weightSum="10"
     tools:cext="com.example.tiki.unispace_app.MainActivity">
 
@@ -16,191 +15,188 @@
     <RelativeLayout
         android:layout_weight="4"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
-
+        android:layout_height="0dp"
+        android:background="@color/main_green"
+        android:shadowColor="@android:color/black"
+        android:shadowDx="-5"
+        android:shadowDy="-5"
+        android:shadowRadius="4">
 
         <TextView
+            android:shadowDx="-5"
+            android:shadowColor="@color/highlightYellow"
+            android:shadowDy="-5"
+            android:shadowRadius="4"
             android:id="@+id/app_name"
-            android:text="UNISPACE"
-            android:textSize="60sp"
-            android:fontFamily="@font/amiko"
-            android:textColor="#50444444"
-            android:shadowColor="@android:color/black"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/bold_and_big"
+            android:padding="20dp"
+            android:text="UNISPACE"
+            android:textAlignment="center"
+            android:textColor="#444444"
+            android:textSize="60sp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/app_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:text="EMPTY IS GOOD" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:text=""
+            android:background="#F6C60C"
+
+            />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="240dp"
+            android:layout_height="120dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="25dp"
+            android:layout_toEndOf="@+id/textView"
+            app:srcCompat="@drawable/building" />
+
+
     </RelativeLayout>
-    
+
     <GridLayout
-    android:id="@+id/mainGrid"
-    android:columnCount="2"
-    android:rowCount="2"
-    android:alignmentMode="alignMargins"
-    android:columnOrderPreserved="false"
-    android:layout_weight="6"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:padding="14dp">
+        android:id="@+id/mainGrid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:alignmentMode="alignMargins"
+        android:background="#EFD998"
+        android:columnCount="2"
+        android:columnOrderPreserved="false"
+        android:padding="14dp"
+        android:rowCount="2">
 
         <android.support.v7.widget.CardView
             android:id="@+id/all_classrooms_item"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="3dp"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="#50444444"
-            >
+            app:cardBackgroundColor="@color/main_green"
+            app:cardCornerRadius="70dp"
+            app:cardElevation="4dp"
+            style="@style/card_View">
+
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border"
+                ></LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="16dp"
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                >
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/amiko"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDx="-5"
-                    android:shadowDy="-5"
-                    android:shadowRadius="4"
+                    style="@style/Main_Text"
                     android:text="FIND ALL CLASSROOMS"
-                    android:textAlignment="center"
-                    android:textColor="	#F5F5DC"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
                     />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView
             android:id="@+id/search_by_building"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="3dp"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="#50444444"
-            >
+            app:cardBackgroundColor="@color/main_green"
+            app:cardCornerRadius="70dp"
+            app:cardElevation="4dp"
+            style="@style/card_View">
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border"
+                ></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="16dp"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/amiko"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDx="-5"
-                    android:shadowDy="-5"
-                    android:shadowRadius="4"
-                    android:text="SEARCH BY BUILDING"
-                    android:textAlignment="center"
-                    android:textColor="	#F5F5DC"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    style="@style/Main_Text"                    android:text="SEARCH BY BUILDING"
                     />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView
             android:id="@+id/nearest"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="3dp"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="#50444444"
-            >
+            app:cardBackgroundColor="@color/main_green"
+            app:cardCornerRadius="70dp"
+            app:cardElevation="4dp"
+            style="@style/card_View">
+
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border"
+                ></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="16dp"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <TextView
+                    style="@style/Main_Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/amiko"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDx="-5"
-                    android:shadowDy="-5"
-                    android:shadowRadius="4"
-                    android:text="FIND NEAREST CLASSROOM"
-                    android:textAlignment="center"
-                    android:textColor="	#F5F5DC"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    />
+                    android:text="FIND NEAREST CLASSROOM" />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView
             android:id="@+id/view_current"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:cardElevation="3dp"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="#50444444"
-            >
+            app:cardBackgroundColor="@color/main_green"
+            app:cardCornerRadius="70dp"
+            app:cardElevation="4dp"
+            style="@style/card_View">
+
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border"
+                ></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="16dp"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <TextView
+                    style="@style/Main_Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/amiko"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDx="-5"
-                    android:shadowDy="-5"
-                    android:shadowRadius="4"
-                    android:text="VIEW MY CLASSROOM"
-                    android:textAlignment="center"
-                    android:textColor="	#F5F5DC"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    />
+                    android:text="VIEW MY CLASSROOM" />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
-
-
-
-
-
-
-
-
-
 
 
     </GridLayout>

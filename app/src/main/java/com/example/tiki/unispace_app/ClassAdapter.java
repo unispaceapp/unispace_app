@@ -32,9 +32,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.classViewHol
         public classViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             //imageView = itemView.findViewById(R.id.imageView);
-            building = itemView.findViewById(R.id.building);
-            classroom = itemView.findViewById(R.id.classroom);
-            freeuntil = itemView.findViewById(R.id.freeuntil);
+            building = itemView.findViewById(R.id.building_place);
+            classroom = itemView.findViewById(R.id.class_place);
+            freeuntil = itemView.findViewById(R.id.freeuntil_place);
             occupy = itemView.findViewById(R.id.image_occupy);
             occupy.setOnClickListener(new View.OnClickListener() {
                                           @Override

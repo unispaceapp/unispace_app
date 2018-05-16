@@ -25,7 +25,8 @@
         </activity>
         <activity android:name=".ViewFreeSpaces" />
         <activity android:name=".LocationActivity" />
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".SearchActivity"/>
+        <activity android:name=".MyClass"/>
 
         <meta-data
             android:name="preloaded_fonts"

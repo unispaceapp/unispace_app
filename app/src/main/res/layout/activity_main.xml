@@ -10,23 +10,35 @@
     tools:cext="com.example.tiki.unispace_app.MainActivity">
 
 
-
-
     <RelativeLayout
-        android:layout_weight="4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="4"
         android:background="@color/main_green"
         android:shadowColor="@android:color/black"
         android:shadowDx="-5"
         android:shadowDy="-5"
         android:shadowRadius="4">
 
+<!--        <TextView
+            android:id="@+id/textView3"
+            style="@style/Main_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/app_name"
+            android:text="VIEW MY CLASSROOM" />
+
         <TextView
-            android:shadowDx="-5"
-            android:shadowColor="@color/highlightYellow"
-            android:shadowDy="-5"
-            android:shadowRadius="4"
+            android:id="@+id/textView5"
+            style="@style/Main_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="FIND ALL CLASSROOMS" />-->
+
+        <TextView
             android:id="@+id/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,6 +46,10 @@
             android:layout_centerVertical="true"
             android:fontFamily="@font/bold_and_big"
             android:padding="20dp"
+            android:shadowColor="@color/highlightYellow"
+            android:shadowDx="-5"
+            android:shadowDy="-5"
+            android:shadowRadius="4"
             android:text="UNISPACE"
             android:textAlignment="center"
             android:textColor="#444444"
@@ -55,8 +71,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:text=""
             android:background="#F6C60C"
+            android:text=""
 
             />
 
@@ -134,7 +150,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Main_Text"                    android:text="SEARCH BY BUILDING"
+                    style="@style/Main_Text"
+                    android:text="SEARCH BY BUILDING"
                     />
 
             </LinearLayout>

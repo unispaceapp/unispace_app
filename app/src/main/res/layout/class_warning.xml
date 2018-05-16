@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_custom_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#828383"
+    android:padding="2dp">
+    <!--tools:context="com.example.tiki.unispace_app.ClassWarning">-->
+
+    <ImageButton
+        android:id="@+id/ib_close"
+        android:layout_width="20dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:src="@drawable/transparent_x" />
+
+    <TextView
+        android:id="@+id/warn_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="25sp"
+        android:text="This class has been taken recently" />
+</RelativeLayout>

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.tiki.unispace_app.ViewFreeSpaces"
     android:background="@color/cream"
+    android:id="@+id/relative"
     >
 
 

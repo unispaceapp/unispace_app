@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import android.transition.Explode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
@@ -65,6 +67,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_free_spaces);
         InitializeMembers();
+
         firebaseHandler = new FirebaseHandler();
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -126,13 +129,14 @@ public class ViewFreeSpaces extends AppCompatActivity{
 
         DatabaseReference hourRef = hoursRef.child(hour);
 
-        final Integer[] value = new Integer[1];
+        final Integer[] value = new Integer[4];
         ValueEventListener hourListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               System.out.println(dataSnapshot.getValue(Integer.class));
+               System.out.println("***********************" + dataSnapshot.getValue(Integer.class));
                value[0] = dataSnapshot.getValue(Integer.class);
-
+               System.out.println("In data changed");
+               Toast.makeText(ViewFreeSpaces.this, "Value is " + value[0], Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -162,10 +166,10 @@ public class ViewFreeSpaces extends AppCompatActivity{
         /* Now in Firebase the value is 1 and therefore
         * next user will not have this classroom included
         * in its list of free classrooms */
-        //hoursRef.child(hour).setValue(1);
+        //hoursRef.child(hour).setValue(9);
         //occupiedClassroom.setFreeUntil("two");
-        boolean check = finalCheckForClass(hour, value[0]);
-        if (!check){
+        boolean occupied = finalCheckForClass(hourRef, hour, value[0]);
+        if (!occupied){
             updateHoursInDB(occupiedClassroom, hoursRef, hour);
             //classroomObjects.get(currentPosition).TEST_CHANGE("OCCUPIED");
             //classroomObjects.remove(currentPosition);
@@ -191,19 +195,20 @@ public class ViewFreeSpaces extends AppCompatActivity{
             ImageButton closeButton = (ImageButton) container.findViewById(R.id.ib_close);
             setContentView(R.layout.class_warning);
             TextView textView = (TextView) findViewById(R.id.warn_txt);
-            textView.setText("This class has been taken recently");
+            textView.setText("This class has been taken recently.");
             closeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // Dismiss the popup window
                     popupWindow.dismiss();
-                    Intent intent = new Intent(getIntent());
-                    deletePositions.add(position);
-                    Bundle b = new Bundle();
-                    b.putIntegerArrayList("Positions", deletePositions);
-                    intent.putExtras(b);
-                    finish();
-                    startActivity(intent);
+                    mAdapter.notifyItemRemoved(currentPosition);
+//                    Intent intent = new Intent(getIntent());
+//                    deletePositions.add(position);
+//                    Bundle b = new Bundle();
+//                    b.putIntegerArrayList("Positions", deletePositions);
+//                    intent.putExtras(b);
+//                    finish();
+//                    startActivity(intent);
                 }
             });
             setContentView(R.layout.activity_view_free_spaces);
@@ -324,8 +329,32 @@ public class ViewFreeSpaces extends AppCompatActivity{
         }
     }
 
-    private boolean finalCheckForClass(String hour, Integer value){
-        return false;//(value[0].equals("0"));
+    private boolean finalCheckForClass(DatabaseReference hourRef, String hour,  Integer value){
+
+        final Integer[] val = new Integer[1];
+        final boolean[] occupied = {false};
+        ValueEventListener hourListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("***********************" + dataSnapshot.getValue(Integer.class));
+                val[0] = dataSnapshot.getValue(Integer.class);
+                if(val[0] == 1) {
+                    occupied[0] = true;
+                }
+                System.out.println("In data changed");
+                Toast.makeText(ViewFreeSpaces.this, "Value is " + val[0], Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        hourRef.addListenerForSingleValueEvent(hourListener);
+
+
+
+        return occupied[0];//(value[0].equals("0"));
     }
 
 

@@ -53,7 +53,7 @@
             android:text="UNISPACE"
             android:textAlignment="center"
             android:textColor="#444444"
-            android:textSize="60sp" />
+            android:textSize="55sp" />
 
         <TextView
             android:id="@+id/textView"

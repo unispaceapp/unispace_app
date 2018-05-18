@@ -85,8 +85,8 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
 
-                textView.setText("Your current location is" + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude);
+//                textView.setText("Your current location is" + "\n" + "Lattitude = " + lattitude
+//                        + "\n" + "Longitude = " + longitude);
                 return location;
 
             } else if (location1 != null) {
@@ -95,8 +95,8 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
 
-                textView.setText("Your current location is" + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude);
+//                textView.setText("Your current location is" + "\n" + "Lattitude = " + lattitude
+//                        + "\n" + "Longitude = " + longitude);
                 return location1;
 
             } else if (location2 != null) {
@@ -105,9 +105,9 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
 
-                textView.setText("Your current location is" + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude);
-                String url = "https://iradivi.com/test/?latitude=" + lattitude + "&longitude=" + longitude;
+//                textView.setText("Your current location is" + "\n" + "Lattitude = " + lattitude
+//                        + "\n" + "Longitude = " + longitude);
+//                String url = "https://iradivi.com/test/?latitude=" + lattitude + "&longitude=" + longitude;
                 return location2;
 
             } else {

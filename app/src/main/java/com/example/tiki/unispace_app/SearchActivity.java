@@ -37,7 +37,6 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        Toast.makeText(this, "BEFORE", Toast.LENGTH_SHORT).show();
         Button buildingButton = (Button)findViewById(R.id.search);
         buildingButton.setEnabled(false);
             buildingButton.getBackground().setAlpha(100);

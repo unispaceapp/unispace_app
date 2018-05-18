@@ -1,9 +1,11 @@
 package com.example.tiki.unispace_app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import com.example.tiki.unispace_app.ViewFreeSpaces;
 import android.view.View;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class MyClass extends AppCompatActivity {
+public class MyClass extends Activity {
 
     ArrayList<ClassroomObject> classroomObjects;
     private ClassroomObject classroomObj;
@@ -49,26 +51,27 @@ public class MyClass extends AppCompatActivity {
 
         final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-        Button releaseBtn = (Button) findViewById(R.id.release_btn);
-        releaseBtn.setOnClickListener(new View.OnClickListener() {
+        CardView item = (CardView)findViewById(R.id.release_btn);
+
+        item.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 sharedPreferences.edit().clear().apply();
                 freeClass();
-                startActivity(intent);
+                finish();
             }
         });
 
-        Button homeBtn = (Button) findViewById(R.id.to_main);
-        homeBtn.setOnClickListener(new View.OnClickListener() {
+        item = (CardView)findViewById(R.id.to_main);
+
+        item.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     private void freeClass() {
@@ -81,5 +84,6 @@ public class MyClass extends AppCompatActivity {
         DatabaseReference hoursRef = buildingRef.child(Integer.toString(classroom))
                 .child("hours");
         hoursRef.child(hour).setValue(0);
+        //TODO change all hours back to 0
     }
 }

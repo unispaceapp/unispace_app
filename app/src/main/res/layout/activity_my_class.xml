@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C0000000">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_custom_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="360dp"
+    android:layout_height="350dp"
     android:background="@color/cream"
-    android:padding="2dp"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:layout_marginTop="90dp"
+    android:layout_marginLeft="10dp"
+
     tools:context="com.example.tiki.unispace_app.MyClass">
 
     <TextView
         android:id="@+id/title_bar"
-        style="@style/Main_Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main_green"
@@ -21,6 +34,8 @@
         android:shadowDy="-5"
         android:shadowRadius="4"
         android:text="MY CLASSROOM"
+        android:fontFamily="@font/passion_one"
+        android:textColor="#444444"
         android:textAlignment="center"
         android:textSize="35sp"
 
@@ -35,90 +50,103 @@
         android:background="@color/highlightYellow" />
 
     <android.support.v7.widget.CardView
-        android:layout_width="298dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:id="@+id/cardView"
+        android:layout_width="350dp"
+        android:layout_height="150dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="197dp"
+        android:layout_centerVertical="true"
         app:cardBackgroundColor="@color/main_green"
         app:cardCornerRadius="8dp">
         <!--app:cardElevation="3dp"-->
+        <!--android:layout_centerVertical="true"-->
 
 
         <RelativeLayout
-            android:layout_width="298dp"
+            android:layout_width="350dp"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
-            android:background="@drawable/label"
-
-
-            >
+            android:background="@drawable/label">
 
             <TextView
                 android:id="@+id/building_text"
-                style="@style/Main_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/passion_one"
+                android:textColor="#444444"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="5dp"
                 android:padding="10dp"
                 android:paddingRight="15dp"
-                android:text="@string/underlined_building"
-                android:textSize="20dp" />
+                android:text="BUILDING"
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/building_place"
-                style="@style/Main_Text"
                 android:layout_width="125dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:layout_below="@+id/building_text"
-                android:layout_toStartOf="@+id/class_text"
+                android:fontFamily="@font/passion_one"
                 android:text="605"
-                android:textSize="35dp" />
+                android:textAlignment="center"
+                android:textColor="#444444"
+                android:textSize="45sp" />
 
 
             <TextView
                 android:id="@+id/class_text"
-                style="@style/Main_Text"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_marginBottom="15dp"
+
                 android:layout_toEndOf="@+id/building_text"
                 android:padding="10dp"
-
+                android:textAlignment="center"
+                android:fontFamily="@font/passion_one"
+                android:textColor="#444444"
                 android:text="ROOM"
-                android:textSize="20dp" />
+                android:textSize="25dp" />
 
 
             <TextView
                 android:id="@+id/class_place"
-                style="@style/Main_Text"
                 android:layout_width="90dp"
+                android:fontFamily="@font/passion_one"
+                android:textColor="#444444"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/class_text"
-                android:layout_marginLeft="95dp"
+                android:layout_marginLeft="120dp"
+                android:textAlignment="center"
                 android:text="101"
-                android:textSize="35dp" />
+                android:textSize="45sp" />
 
             <TextView
                 android:id="@+id/freeuntil_text"
-                style="@style/Main_Text"
+                android:fontFamily="@font/passion_one"
+                android:textColor="#444444"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
                 android:layout_toRightOf="@+id/class_text"
                 android:padding="10dp"
+
                 android:text="FREE UNTIL"
-                android:textSize="20dp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/freeuntil_place"
-                style="@style/Main_Text"
                 android:layout_width="110dp"
+                android:fontFamily="@font/passion_one"
+                android:textColor="#444444"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/freeuntil_text"
-                android:layout_marginLeft="180dp"
+                android:layout_toEndOf="@+id/class_place"
+                android:paddingLeft="20dp"
                 android:text="12:00"
-                android:textSize="35dp" />
+                android:textSize="45sp" />
 
             <!--<TextView-->
             <!--android:layout_width="wrap_content"-->
@@ -133,23 +161,91 @@
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
-    <Button
-        android:id="@+id/release_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="167dp"
-        android:text="Release Class" />
 
-    <Button
-        android:id="@+id/to_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="71dp"
-        android:text="Home" />
+    <GridLayout
+        android:id="@+id/mainGrid"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/cardView"
+        android:layout_weight="6"
+        android:alignmentMode="alignMargins"
+        android:background="#EFD998"
+        android:columnCount="2"
+        android:columnOrderPreserved="false"
+        android:padding="14dp"
+        android:rowCount="1">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/to_main"
+            style="@style/card_View"
+            app:cardBackgroundColor="@color/main_green"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/label"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Main_Text"
+                    android:textSize="15sp"
+                    android:padding="4dp"
+                    android:text="Start Studying!" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/release_btn"
+            style="@style/card_View"
+            app:cardBackgroundColor="@color/main_green"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/label"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Main_Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:padding="4dp"
+                    android:text="Release and Swap" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
 
+    </GridLayout>
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>
 </RelativeLayout>

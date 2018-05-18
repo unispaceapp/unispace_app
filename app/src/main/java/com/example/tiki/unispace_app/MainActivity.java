@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.transition.Explode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +31,6 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
          mainGrid = (GridLayout)findViewById(R.id.mainGrid);
          setOnClickListeners();
@@ -64,7 +65,8 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View view) {
-                openActivity(view, "NEAREST");
+                Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -127,6 +129,7 @@ public class MainActivity extends AppCompatActivity{
         });*/
 
     }
+
 
     public void openActivity(View view, String request) {
         Intent intent = new Intent(this, ViewFreeSpaces.class);

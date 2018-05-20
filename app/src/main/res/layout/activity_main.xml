@@ -20,7 +20,7 @@
         android:shadowDy="-5"
         android:shadowRadius="4">
 
-<!--        <TextView
+        <!--<TextView
             android:id="@+id/textView3"
             style="@style/Main_Text"
             android:layout_width="wrap_content"
@@ -110,8 +110,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border"
-                ></LinearLayout>
+                android:background="@drawable/border" />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -134,11 +133,11 @@
             app:cardCornerRadius="70dp"
             app:cardElevation="4dp"
             style="@style/card_View">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border"
-                ></LinearLayout>
+                android:background="@drawable/border" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -167,8 +166,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border"
-                ></LinearLayout>
+                android:background="@drawable/border" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -196,8 +194,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border"
-                ></LinearLayout>
+                android:background="@drawable/border" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

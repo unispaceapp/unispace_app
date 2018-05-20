@@ -1,10 +1,16 @@
 package com.example.tiki.unispace_app;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Build;
 import android.os.StrictMode;
+import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -182,6 +188,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
             editor.putInt("Class", occupiedClassroom.getClassroom());
             editor.putString("Freeuntil", occupiedClassroom.getFreeUntil());
             editor.apply();
+            scheduleNotification(getApplicationContext(), hourInts.get(occupiedClassroom.getFreeUntil()));
             Intent intent = new Intent(getApplicationContext(), MyClass.class);
             startActivity(intent);
         } else {
@@ -316,16 +323,13 @@ public class ViewFreeSpaces extends AppCompatActivity{
         String freeUntil = occupiedClassroom.getFreeUntil();
         int freeUntilInt = hourInts.get(freeUntil);
         int firstHour = hourInts.get(hour);
+        int updateUntil = 20;
         if (firstHour<freeUntilInt) {
-            for (int i = firstHour; i < freeUntilInt; i++) {
-                hour = hourStrings.get(i);
-                hoursRef.child(hour).setValue(1);
-            }
-        } else {
-            for (int i = firstHour; i < 20; i++) {
-                hour = hourStrings.get(i);
-                hoursRef.child(hour).setValue(1);
-            }
+            updateUntil = freeUntilInt;
+        }
+        for (int i = firstHour; i < updateUntil; i++) {
+            hour = hourStrings.get(i);
+            hoursRef.child(hour).setValue(1);
         }
     }
 
@@ -357,7 +361,27 @@ public class ViewFreeSpaces extends AppCompatActivity{
         return occupied[0];//(value[0].equals("0"));
     }
 
+    private void scheduleNotification(Context context, int hour){
+        Notification.Builder builder = new Notification.Builder(context);
+        builder.setContentTitle("Time's up");
+        builder.setContentText("You have left 10 minutes in your current classroom");
+        builder.setSmallIcon(R.mipmap.unispace_logo);
 
+        Notification notification = builder.build();
+
+        Intent notificationIntent = new Intent(context, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.HOUR_OF_DAY, hour);
+        calendar.set(calendar.MINUTE, 50);
+        calendar.set(calendar.SECOND, 0);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+    }
 
 }
 

@@ -25,7 +25,7 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity{
 
-
+    private SharedPreferences sharedPreferences;
     GridLayout mainGrid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
          mainGrid = (GridLayout)findViewById(R.id.mainGrid);
+         sharedPreferences = getSharedPreferences("My Class",MODE_PRIVATE);
          setOnClickListeners();
     }
 
@@ -45,8 +46,12 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View view) {
-                enableStrictMode();
-                openActivity(view, "ALL");
+                if (sharedPreferences.getAll().isEmpty()) {
+                    enableStrictMode();
+                    openActivity(view, "ALL");
+                } else {
+                    Toast.makeText(MainActivity.this, "User Can't take more than one class", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -55,8 +60,13 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                startActivity(intent);
+                if (sharedPreferences.getAll().isEmpty()) {
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this, "User Can't take more than one class", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -65,8 +75,12 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
-                startActivity(intent);
+                if (sharedPreferences.getAll().isEmpty()) {
+                    Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this, "User Can't take more than one class", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -74,12 +88,18 @@ public class MainActivity extends AppCompatActivity{
         item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "NO CURRENT CLASSROOM TO DISPLAY", Toast.LENGTH_LONG).show();
+                if (sharedPreferences.getAll().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "NO CURRENT CLASSROOM TO DISPLAY", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), MyClass.class);
+                    startActivity(intent);
+                }
             }
         });
 
 
-        /*TextView item2 = (TextView)findViewById(R.id.textView5);
+/*
+        TextView item2 = (TextView)findViewById(R.id.textView5);
         item2.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -112,9 +132,9 @@ public class MainActivity extends AppCompatActivity{
                         public void onClick(View view) {
                             // Dismiss the popup window
                             popupWindow.dismiss();
-                            *//*Intent intent = new Intent(getIntent());
+                            Intent intent = new Intent(getIntent());
                             finish();
-                            startActivity(intent);*//*
+                            startActivity(intent);
                         }
                     });
                     setContentView(R.layout.activity_main);
@@ -126,7 +146,8 @@ public class MainActivity extends AppCompatActivity{
                 }
 
             }
-        });*/
+        });
+*/
 
     }
 

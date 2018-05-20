@@ -1,6 +1,7 @@
 package com.example.tiki.unispace_app;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -59,6 +60,7 @@ public class MyClass extends Activity {
             public void onClick(View view) {
                 sharedPreferences.edit().clear().apply();
                 freeClass();
+                cancelNotification();
                 finish();
             }
         });
@@ -83,7 +85,24 @@ public class MyClass extends Activity {
         /* Gets a reference to the 'hours' field in the occupied classroom */
         DatabaseReference hoursRef = buildingRef.child(Integer.toString(classroom))
                 .child("hours");
-        hoursRef.child(hour).setValue(0);
-        //TODO change all hours back to 0
+        //hoursRef.child(hour).setValue(0);
+
+        int freeUntilInt = ViewFreeSpaces.hourInts.get(freeuntil);
+        int currentHour = ViewFreeSpaces.hourInts.get(hour);
+        int updateUntil = 20;
+        if (currentHour<freeUntilInt) {
+            updateUntil = freeUntilInt;
+        }
+        for (int i = currentHour; i < updateUntil; i++) {
+            hour = ViewFreeSpaces.hourStrings.get(i);
+            hoursRef.child(hour).setValue(0);
+        }
+    }
+
+    private void cancelNotification(){
+        NotificationManager nm = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+        if (nm!=null) {
+            nm.cancelAll();
+        }
     }
 }

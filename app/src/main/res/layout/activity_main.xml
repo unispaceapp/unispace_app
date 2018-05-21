@@ -10,50 +10,34 @@
     tools:cext="com.example.tiki.unispace_app.MainActivity">
 
 
+
+
     <RelativeLayout
+        android:layout_weight="4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
         android:background="@color/main_green"
         android:shadowColor="@android:color/black"
         android:shadowDx="-5"
         android:shadowDy="-5"
         android:shadowRadius="4">
 
-        <!--<TextView
-            android:id="@+id/textView3"
-            style="@style/Main_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/app_name"
-            android:text="VIEW MY CLASSROOM" />
-
         <TextView
-            android:id="@+id/textView5"
-            style="@style/Main_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="FIND ALL CLASSROOMS" />-->
-
-        <TextView
+            android:shadowDx="-5"
+            android:shadowColor="@color/highlightYellow"
+            android:shadowDy="-5"
+            android:shadowRadius="4"
             android:id="@+id/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:fontFamily="@font/bold_and_big"
-            android:padding="20dp"
-            android:shadowColor="@color/highlightYellow"
-            android:shadowDx="-5"
-            android:shadowDy="-5"
-            android:shadowRadius="4"
+            android:padding="8dp"
             android:text="UNISPACE"
             android:textAlignment="center"
             android:textColor="#444444"
-            android:textSize="55sp" />
+            android:textSize="60sp" />
 
         <TextView
             android:id="@+id/textView"
@@ -71,8 +55,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
-            android:background="#F6C60C"
             android:text=""
+            android:background="#F6C60C"
 
             />
 
@@ -110,7 +94,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border" />
+                android:background="@drawable/border"
+                ></LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,11 +118,11 @@
             app:cardCornerRadius="70dp"
             app:cardElevation="4dp"
             style="@style/card_View">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border" />
+                android:background="@drawable/border"
+                ></LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -166,7 +151,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border" />
+                android:background="@drawable/border"
+                ></LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -194,7 +180,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border" />
+                android:background="@drawable/border"
+                ></LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -217,38 +204,38 @@
 
 
     <!--<Button-->
-        <!--android:id="@+id/freeSpaceButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginBottom="267dp"-->
-        <!--android:layout_marginTop="111dp"-->
-        <!--android:text="View Free Spaces Activity"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/nearestButton"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
+    <!--android:id="@+id/freeSpaceButton"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_marginBottom="267dp"-->
+    <!--android:layout_marginTop="111dp"-->
+    <!--android:text="View Free Spaces Activity"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/nearestButton"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/byBuilding"-->
-        <!--android:layout_width="158dp"-->
-        <!--android:layout_height="90dp"-->
-        <!--android:layout_marginBottom="147dp"-->
-        <!--android:text="Search By Building"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/freeSpaceButton" />-->
+    <!--android:id="@+id/byBuilding"-->
+    <!--android:layout_width="158dp"-->
+    <!--android:layout_height="90dp"-->
+    <!--android:layout_marginBottom="147dp"-->
+    <!--android:text="Search By Building"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/freeSpaceButton" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/nearestButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="44dp"-->
-        <!--android:layout_marginEnd="116dp"-->
-        <!--android:text="Find Nearest"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/freeSpaceButton" />-->
+    <!--android:id="@+id/nearestButton"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="44dp"-->
+    <!--android:layout_marginEnd="116dp"-->
+    <!--android:text="Find Nearest"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/freeSpaceButton" />-->
 
 
 </LinearLayout>

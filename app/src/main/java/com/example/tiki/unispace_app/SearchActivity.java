@@ -1,20 +1,26 @@
 package com.example.tiki.unispace_app;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity  implements TextWatcher {
+public class SearchActivity extends AppCompatActivity  implements TextWatcher{
     private ArrayList buildings = new ArrayList();
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +28,77 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher {
         init();
         EditText searcher = (EditText)findViewById(R.id.building);
         searcher.addTextChangedListener(this);
-        Button buildingButton = (Button)findViewById(R.id.search);
-        buildingButton.setOnClickListener(new View.OnClickListener() {
+//        Button buildingButton = (Button)findViewById(R.id.search);
+//        buildingButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(), ViewFreeSpaces.class);
+//                EditText et = (EditText)findViewById(R.id.building);
+//                String wantedBuilding = et.getText().toString();
+//                intent.putExtra(Intent.EXTRA_TEXT, "BUILDING" + wantedBuilding);
+//                startActivity(intent);
+//            }
+//        });
+        GridLayout grid = (GridLayout) findViewById(R.id.mainGrid);
+        int count = grid.getChildCount();
+        for(int child = 0; child < 9; child++) {
+            final CardView dial = (CardView)grid.getChildAt(child);
+            final int c = child +1;
+            dial.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText et = (EditText)findViewById(R.id.building);
+                    et.append(Integer.toString(c));
+
+                }
+
+            });
+            dial.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            v.setElevation(0);
+                        }
+                        //v.setBackgroundColor(getResources().getColor(R.color.main_green));
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            v.setElevation(10);
+                        }
+                        //v.setBackgroundColor(getResources().getColor(R.color.main_green));
+
+                    }
+
+                }
+            });
+
+        }
+        CardView dial = (CardView)grid.getChildAt(9);
+        dial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText et = (EditText)findViewById(R.id.building);
+                et.setText("");
+
+
+
+            }
+        });
+
+        dial = (CardView)grid.getChildAt(10);
+        dial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText et = (EditText)findViewById(R.id.building);
+                et.append(Integer.toString(0));
+
+
+
+            }
+        });
+        dial = (CardView)grid.getChildAt(11);
+        dial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ViewFreeSpaces.class);
@@ -33,22 +108,24 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher {
                 startActivity(intent);
             }
         });
+
+
     }
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        Button buildingButton = (Button)findViewById(R.id.search);
-        buildingButton.setEnabled(false);
-            buildingButton.getBackground().setAlpha(100);
+        CardView dial = (CardView)findViewById(R.id.search);
+        dial.setEnabled(false);
+        dial.setBackgroundColor(getResources().getColor(R.color.cream));
 
     }
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if(buildings.contains(charSequence)){
-            Button buildingButton = (Button)findViewById(R.id.search);
-            buildingButton.setEnabled(true);
-            buildingButton.getBackground().setAlpha(255);
+            CardView dial = (CardView)findViewById(R.id.search);
+            dial.setEnabled(true);
+            dial.setBackgroundColor(getResources().getColor(R.color.trans_green_color));
         }
 
     }
@@ -56,11 +133,13 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         if(buildings.contains(editable.toString())){
-            Button buildingButton = (Button)findViewById(R.id.search);
-            buildingButton.setEnabled(true);
-            buildingButton.getBackground().setAlpha(255);
+             CardView dial = (CardView)findViewById(R.id.search);
+            dial.setEnabled(true);
+            dial.setBackgroundColor(getResources().getColor(R.color.trans_green_color));
         }
     }
+
+
 
 
     private void init() {
@@ -140,4 +219,5 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher {
         buildings.add("1105");
 
     }
+
 }

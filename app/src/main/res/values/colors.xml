@@ -6,5 +6,6 @@
     <color name="highlightYellow">#F6C60C</color>
     <color name="main_green">#804CAD10</color>
     <color name="cream">#EFD998</color>
+    <color name="accent_material_light_1">#f5b800</color>
 
 </resources>

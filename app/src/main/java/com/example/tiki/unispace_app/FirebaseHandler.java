@@ -1,5 +1,6 @@
 package com.example.tiki.unispace_app;
 import android.location.Location;
+import android.os.AsyncTask;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class FirebaseHandler {
 
@@ -37,14 +39,52 @@ public class FirebaseHandler {
     }
 
 
-    public ArrayList<ClassroomObject> GetNearestClassrooms(Location location) {
-        StringBuffer response = GeneralRequest("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByBuilding",
-                "lat=" + location.getLatitude() + "&long=" + location.getLongitude());
-        System.out.println("*** RESPONSE *** " + response.toString());
+    public ArrayList<ClassroomObject> GetNearestClassrooms(Location location) throws ExecutionException, InterruptedException {
+        /*StringBuffer response = GeneralRequest("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByBuilding",
+                "lat=" + location.getLatitude() + "&long=" + location.getLongitude());*/
+        String locationString = "location=" + Double.toString(location.getLatitude()) + ", " + Double.toString(location.getLongitude());/*"location=32.070470, 34.844486"; //todo parse location to string*/
+        ArrayList<ClassroomObject> objects = new ArrayList<>();
+        MyAsyncTask task = new MyAsyncTask();
+        AsyncTask<String, String, StringBuffer> response = task.execute("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByLocation",
+                "byLocation", locationString);
+        System.out.println("*** RESPONSE *** " + response.get().toString());
         JSONArray jsonAr = null;
         JsonElement jsonArr = null;
         try {
-            jsonArr = new JsonParser().parse(response.toString());
+            jsonArr = new JsonParser().parse(response.get().toString());
+
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("*** JSONARRAY: *** " + jsonArr);
+        JsonArray arr = jsonArr.getAsJsonArray();
+        for (int i=0; i<arr.size(); i++){
+            JsonElement currBuilding = arr.get(i);
+            objects = GetClassroomsByBuilding("building="+currBuilding.getAsString());
+            if (objects.size()>0){
+                return objects;
+            }
+        }
+        //return convertJsonToObjects(jsonArr.getAsJsonObject());
+        return objects;
+    }
+
+
+    public ArrayList<ClassroomObject> GetClassroomsByBuilding(String requestedBuilding) throws ExecutionException, InterruptedException {
+        /*StringBuffer response = GeneralRequest("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByBuilding",
+                requestedBuilding);*/
+        MyAsyncTask task = new MyAsyncTask();
+        AsyncTask<String, String, StringBuffer> response = task.execute("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByBuilding",
+                "byBuilding", requestedBuilding);
+        System.out.println("*** RESPONSE *** " + response.get().toString());
+        JSONArray jsonAr = null;
+        JsonElement jsonArr = null;
+        try {
+            jsonArr = new JsonParser().parse(response.get().toString());
 
         } catch (JsonParseException e) {
             e.printStackTrace();
@@ -54,30 +94,24 @@ public class FirebaseHandler {
     }
 
 
-    public ArrayList<ClassroomObject> GetClassroomsByBuilding(int buildingNum) {
-        StringBuffer response = GeneralRequest("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByBuilding",
-                "building=" + buildingNum);
-        System.out.println("*** RESPONSE *** " + response.toString());
+    public ArrayList<ClassroomObject> GetAllClassrooms() throws ExecutionException, InterruptedException {
+        /*StringBuffer response = GeneralRequest("https://us-central1-unispace-198015.cloudfunctions.net/requestAllClassrooms",
+                null);*/
+        MyAsyncTask task = new MyAsyncTask();
+        AsyncTask<String, String, StringBuffer> response = task.execute("https://us-central1-unispace-198015.cloudfunctions.net/requestAllClassrooms",
+                "all");
+        //System.out.println("*** RESPONSE *** " + response.get().toString());
         JSONArray jsonAr = null;
         JsonElement jsonArr = null;
         try {
-            jsonArr = new JsonParser().parse(response.toString());
-
-        } catch (JsonParseException e) {
+            jsonArr = new JsonParser().parse(response.get().toString());
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        System.out.println("*** JSONARRAY: *** " + jsonArr);
-        return convertJsonToObjects(jsonArr.getAsJsonObject());
-    }
-
-
-    public ArrayList<ClassroomObject> GetAllClassrooms() {
-        StringBuffer response = GeneralRequest("https://us-central1-unispace-198015.cloudfunctions.net/requestAllClassrooms",
-                null);
-        System.out.println("*** RESPONSE *** " + response.toString());
-        JSONArray jsonAr = null;
-        JsonElement jsonArr = null;
-            jsonArr = new JsonParser().parse(response.toString());
         System.out.println("*** JSONARRAY: *** " + jsonArr);
         return convertJsonToObjects(jsonArr.getAsJsonObject());
     }
@@ -220,6 +254,65 @@ public class FirebaseHandler {
 
 
 
+
+    }
+
+    private class MyAsyncTask extends AsyncTask<String, String, StringBuffer>{
+
+        @Override
+        protected StringBuffer doInBackground(String... strings) {
+            URL url = null;
+            try {
+                url = new URL(strings[0]);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            HttpURLConnection con = null;
+            try {
+                con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("POST");
+                con.setDoOutput(true);
+                if (strings[1].equals("byBuilding")) {
+                    con.getOutputStream().write(strings[2].getBytes());
+                } else if (strings[1].equals("byLocation")){
+                    con.getOutputStream().write(strings[2].getBytes());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                int status = con.getResponseCode();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            BufferedReader in = null;
+            try {
+                in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            try {
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            con.disconnect();
+            return content;
+//            return null;
+        }
 
     }
 }

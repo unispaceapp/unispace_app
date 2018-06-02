@@ -14,8 +14,8 @@
         android:layout_height="25dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:background="@null"/>
-        <!--android:src="@drawable/transparent_x" />-->
+        android:background="@null"
+        android:src="@drawable/transparent_x" />
 
     <TextView
         android:id="@+id/warn_txt"
@@ -23,5 +23,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:padding="25sp"
-        android:text="This class has been taken recently" />
+        android:text="No free classrooms found" />
 </RelativeLayout>

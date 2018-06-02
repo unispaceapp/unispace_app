@@ -104,7 +104,7 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher{
                 Intent intent = new Intent(getApplicationContext(), ViewFreeSpaces.class);
                 EditText et = (EditText)findViewById(R.id.building);
                 String wantedBuilding = et.getText().toString();
-                intent.putExtra(Intent.EXTRA_TEXT, "BUILDING" + wantedBuilding);
+                intent.putExtra(Intent.EXTRA_TEXT, "building="+ wantedBuilding);
                 startActivity(intent);
             }
         });

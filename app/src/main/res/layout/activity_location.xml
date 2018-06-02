@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.tiki.unispace_app.LocationActivity">
 
-    <Button
+<!--    <Button
         android:id="@+id/GetLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,5 +22,5 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="319dp" />
+        tools:layout_editor_absoluteY="319dp" />-->
 </android.support.constraint.ConstraintLayout>

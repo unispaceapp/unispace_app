@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity{
 
 
          mainGrid = (GridLayout)findViewById(R.id.mainGrid);
-         sharedPreferences = getSharedPreferences("My_Class",MODE_PRIVATE);
-         sharedPreferences.edit().clear().apply();
+         sharedPreferences = getSharedPreferences("My Class",MODE_PRIVATE);
          setOnClickListeners();
     }
 
@@ -80,6 +79,7 @@ public class MainActivity extends AppCompatActivity{
                 if (sharedPreferences.getAll().isEmpty()) {
                     Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
                     startActivity(intent);
+//                    openActivity(view, "location");
                 } else {
                     Toast.makeText(MainActivity.this, "User Can't take more than one class", Toast.LENGTH_LONG).show();
                 }
@@ -165,6 +165,14 @@ public class MainActivity extends AppCompatActivity{
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 

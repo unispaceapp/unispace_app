@@ -28,15 +28,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main_green"
+        android:fontFamily="@font/passion_one"
         android:paddingTop="10dp"
         android:shadowColor="@color/highlightYellow"
         android:shadowDx="-5"
         android:shadowDy="-5"
         android:shadowRadius="4"
         android:text="MY CLASSROOM"
-        android:fontFamily="@font/passion_one"
-        android:textColor="#444444"
         android:textAlignment="center"
+        android:textColor="#444444"
         android:textSize="35sp"
 
         />

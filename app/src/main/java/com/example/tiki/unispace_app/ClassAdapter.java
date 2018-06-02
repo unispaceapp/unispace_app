@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.classViewHolder> {
 
@@ -14,7 +15,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.classViewHol
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onOccupyClick(int position);
+        void onOccupyClick(int position) throws ExecutionException, InterruptedException;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -42,7 +43,13 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.classViewHol
                                               if (listener != null) {
                                                   int position = getAdapterPosition();
                                                   if (position != RecyclerView.NO_POSITION) {
-                                                      listener.onOccupyClick(position);
+                                                      try {
+                                                          listener.onOccupyClick(position);
+                                                      } catch (ExecutionException e) {
+                                                          e.printStackTrace();
+                                                      } catch (InterruptedException e) {
+                                                          e.printStackTrace();
+                                                      }
                                                   }
                                               }
                                           }

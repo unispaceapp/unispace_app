@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.StrictMode;
 import android.os.SystemClock;
@@ -42,6 +43,7 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ViewFreeSpaces extends AppCompatActivity{
 
@@ -82,17 +84,73 @@ public class ViewFreeSpaces extends AppCompatActivity{
         Intent intent = getIntent();
         String request = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (request.equals("ALL")) {
-            classroomObjects = firebaseHandler.GetAllClassrooms();
+            try {
+                classroomObjects = firebaseHandler.GetAllClassrooms();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             //TODO parse request
-        } else if (request.startsWith("BUILDING")) {
-            classroomObjects = firebaseHandler.GetClassroomsByBuilding(Integer.parseInt(request));
+        } else if (request.contains("building")) {
+            try {
+                classroomObjects = firebaseHandler.GetClassroomsByBuilding(request);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
-            Location l = new Gson().fromJson(request, Location.class);
-            classroomObjects = firebaseHandler.GetNearestClassrooms(l);
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Location location = new Gson().fromJson(request, Location.class);
+            try {
+                classroomObjects = firebaseHandler.GetNearestClassrooms(location);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (classroomObjects.size()==0){
+            layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            View container = (View) layoutInflater.inflate(R.layout.class_warning,null);
+            //popupWindow = new PopupWindow(container,700, 700,true);
+            popupWindow = new PopupWindow(container, RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+            if (Build.VERSION.SDK_INT>=21){
+                popupWindow.setElevation(5.0f);
+            }
+            ImageButton closeButton = (ImageButton) container.findViewById(R.id.ib_close);
+            /*setContentView(R.layout.class_warning);
+            TextView textView = (TextView) findViewById(R.id.warn_txt);
+            textView.setText("This class has been taken recently.");*/
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Dismiss the popup window
+                    popupWindow.dismiss();
+                   // mAdapter.notifyItemRemoved(currentPosition);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+//                    deletePositions.add(position);
+//                    Bundle b = new Bundle();
+//                    b.putIntegerArrayList("Positions", deletePositions);
+//                    intent.putExtras(b);
+//                    finish();
+//                    startActivity(intent);
+                }
+            });
+            setContentView(R.layout.activity_view_free_spaces);
+            relativeLayout = (RelativeLayout) findViewById(R.id.relative);
+            relativeLayout.post(new Runnable() {
+                public void run() {
+                    popupWindow.showAtLocation(relativeLayout, Gravity.CENTER, 0, 0);
+                }
+            });
         }
 
         for (int i = 0; i < classroomObjects.size(); i++) {
-            classroomObjects.get(i).setFreeUntil("five");
+//            classroomObjects.get(i).setFreeUntil("five");
             classroomObjects.get(i).setIcon(R.drawable.ic_home_black_24dp);
         }
 
@@ -188,7 +246,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
             editor.putInt("Class", occupiedClassroom.getClassroom());
             editor.putString("Freeuntil", occupiedClassroom.getFreeUntil());
             editor.apply();
-            scheduleNotification(getApplicationContext(), hourInts.get(occupiedClassroom.getFreeUntil()));
+            scheduleNotification(getApplicationContext(), hourInts.get(occupiedClassroom.getFreeUntil())-1);
             Intent intent = new Intent(getApplicationContext(), MyClass.class);
             startActivity(intent);
         } else {
@@ -321,7 +379,10 @@ public class ViewFreeSpaces extends AppCompatActivity{
 
     private void updateHoursInDB(ClassroomObject occupiedClassroom, DatabaseReference hoursRef, String hour){
         String freeUntil = occupiedClassroom.getFreeUntil();
-        int freeUntilInt = hourInts.get(freeUntil);
+        int freeUntilInt = 0;
+        if (!freeUntil.equals("0")){
+            freeUntilInt = hourInts.get(freeUntil);
+        }
         int firstHour = hourInts.get(hour);
         int updateUntil = 20;
         if (firstHour<freeUntilInt) {

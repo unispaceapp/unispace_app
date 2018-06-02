@@ -32,8 +32,8 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        textView = (TextView)findViewById(R.id.lat);
-        button = (Button)findViewById(R.id.GetLocation);
+        /*textView = (TextView)findViewById(R.id.lat);
+        button = (Button)findViewById(R.id.GetLocation);*/
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
@@ -131,7 +131,8 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
+                        //dialog.cancel();
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     }
                 });
         final AlertDialog alert = builder.create();

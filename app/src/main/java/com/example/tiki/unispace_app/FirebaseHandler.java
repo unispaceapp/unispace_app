@@ -44,31 +44,39 @@ public class FirebaseHandler {
                 "lat=" + location.getLatitude() + "&long=" + location.getLongitude());*/
         String locationString = "location=" + Double.toString(location.getLatitude()) + ", " + Double.toString(location.getLongitude());/*"location=32.070470, 34.844486"; //todo parse location to string*/
         ArrayList<ClassroomObject> objects = new ArrayList<>();
-        MyAsyncTask task = new MyAsyncTask();
-        AsyncTask<String, String, StringBuffer> response = task.execute("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByLocation",
-                "byLocation", locationString);
-        System.out.println("*** RESPONSE *** " + response.get().toString());
-        JSONArray jsonAr = null;
-        JsonElement jsonArr = null;
-        try {
-            jsonArr = new JsonParser().parse(response.get().toString());
+        ArrayList<String> checkedBuildings = new ArrayList<>();
+        StringBuilder allBuildings = new StringBuilder();
+        String checked = "checked=";
+        do {
+            MyAsyncTask task = new MyAsyncTask();
+            AsyncTask<String, String, StringBuffer> response = task.execute("https://us-central1-unispace-198015.cloudfunctions.net/classroomsByLocation",
+                    "byLocation", locationString, checked+allBuildings);
+            System.out.println("*** RESPONSE *** " + response.get().toString());
+            JSONArray jsonAr = null;
+            JsonElement jsonArr = null;
+            try {
+                jsonArr = new JsonParser().parse(response.get().toString());
 
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        System.out.println("*** JSONARRAY: *** " + jsonArr);
-        JsonArray arr = jsonArr.getAsJsonArray();
-        for (int i=0; i<arr.size(); i++){
-            JsonElement currBuilding = arr.get(i);
-            objects = GetClassroomsByBuilding("building="+currBuilding.getAsString());
-            if (objects.size()>0){
-                return objects;
+            } catch (JsonParseException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
-        }
+            System.out.println("*** JSONARRAY: *** " + jsonArr);
+            JsonArray arr = jsonArr.getAsJsonArray();
+            for (int i = 0; i < arr.size(); i++) {
+                JsonElement currBuilding = arr.get(i);
+                objects = GetClassroomsByBuilding("building=" + currBuilding.getAsString());
+                if (objects.size() > 0) {
+                    return objects;
+                }
+                checkedBuildings.add(currBuilding.getAsString());
+                allBuildings.append(currBuilding.getAsString());
+                allBuildings.append("-");
+            }
+        } while (objects.size()==0 || checkedBuildings.size()!=34);
         //return convertJsonToObjects(jsonArr.getAsJsonObject());
         return objects;
     }
@@ -275,7 +283,8 @@ public class FirebaseHandler {
                 if (strings[1].equals("byBuilding")) {
                     con.getOutputStream().write(strings[2].getBytes());
                 } else if (strings[1].equals("byLocation")){
-                    con.getOutputStream().write(strings[2].getBytes());
+                    con.getOutputStream().write((strings[2]+"&"+strings[3]).getBytes());
+                    //con.getOutputStream().write(strings[3].getBytes());
                 }
             } catch (IOException e) {
                 e.printStackTrace();

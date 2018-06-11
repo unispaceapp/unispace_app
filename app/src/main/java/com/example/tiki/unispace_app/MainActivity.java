@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
          mainGrid = (GridLayout)findViewById(R.id.mainGrid);
          sharedPreferences = getSharedPreferences("My Class",MODE_PRIVATE);
          setOnClickListeners();

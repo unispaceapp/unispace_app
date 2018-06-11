@@ -84,16 +84,32 @@ public class ViewFreeSpaces extends AppCompatActivity{
         Intent intent = getIntent();
         String request = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (request.equals("ALL")) {
-            classroomObjects = firebaseHandler.GetAllClassrooms();
+            try {
+                classroomObjects = firebaseHandler.GetAllClassrooms();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             //TODO parse request
         } else if (request.contains("building")) {
-            classroomObjects = firebaseHandler.GetClassroomsByBuilding(Integer.parseInt(request));
-
+            try {
+                classroomObjects = firebaseHandler.GetClassroomsByBuilding(request);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location location = new Gson().fromJson(request, Location.class);
-            classroomObjects = firebaseHandler.GetNearestClassrooms(location);
-
+            try {
+                classroomObjects = firebaseHandler.GetNearestClassrooms(location);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         if (classroomObjects.size()==0){
@@ -190,6 +206,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
                System.out.println("***********************" + dataSnapshot.getValue(Integer.class));
                value[0] = dataSnapshot.getValue(Integer.class);
                System.out.println("In data changed");
+               Toast.makeText(ViewFreeSpaces.this, "Value is " + value[0], Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -198,6 +215,24 @@ public class ViewFreeSpaces extends AppCompatActivity{
             }
         };
         hourRef.addListenerForSingleValueEvent(hourListener);
+        /* Adds a listener for when a 'hours' child is updated in Firebase DB */
+        //TODO: TASK 6 in onChildChange, change hour from current hour till 'free until' to '1' --
+        // When classroom released, will convert back to '0' - Use value of current hour, if now its zero, means must convert hours back to zeros - otherwise, was just updated to '1'
+//        ValueEventListener hoursListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                int time = dataSnapshot.getValue(Integer.class);
+//
+//                classroomObjects.get(currentPosition).TEST_CHANGE(Integer.toString(time));
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//            }
+//        };
+//        hoursRef.addEvenListener(hoursListener);
         /* Now in Firebase the value is 1 and therefore
         * next user will not have this classroom included
         * in its list of free classrooms */
@@ -209,6 +244,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
         }
         if (!occupied){
             updateHoursInDB(occupiedClassroom, hoursRef, hour);
+            //classroomObjects.get(currentPosition).TEST_CHANGE("OCCUPIED");
             //classroomObjects.remove(currentPosition);
             //mAdapter.notifyItemRemoved(currentPosition);
             mAdapter.notifyItemChanged(position);
@@ -242,6 +278,13 @@ public class ViewFreeSpaces extends AppCompatActivity{
                     // Dismiss the popup window
                     popupWindow.dismiss();
                     mAdapter.notifyItemRemoved(currentPosition);
+//                    Intent intent = new Intent(getIntent());
+//                    deletePositions.add(position);
+//                    Bundle b = new Bundle();
+//                    b.putIntegerArrayList("Positions", deletePositions);
+//                    intent.putExtras(b);
+//                    finish();
+//                    startActivity(intent);
                 }
             });
             setContentView(R.layout.activity_view_free_spaces);

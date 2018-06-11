@@ -79,6 +79,9 @@ public class MyClass extends Activity {
     private void freeClass() {
         Calendar calendar = GregorianCalendar.getInstance();
         String hour =  ViewFreeSpaces.hourStrings.get(calendar.get(Calendar.HOUR_OF_DAY));
+        if (hour==null){
+            hour="all";
+        }
         FirebaseDatabase db = FirebaseDatabase.getInstance("https://todaysclassrooms.firebaseio.com");
         /* Gets a reference to the correct hour that needs to be changed */
         final DatabaseReference buildingRef = db.getReference().child(Integer.toString(building));
@@ -87,8 +90,14 @@ public class MyClass extends Activity {
                 .child("hours");
         //hoursRef.child(hour).setValue(0);
 
+        if (freeuntil.equals("All Day")){
+            freeuntil="all";
+        }
         int freeUntilInt = ViewFreeSpaces.hourInts.get(freeuntil);
-        int currentHour = ViewFreeSpaces.hourInts.get(hour);
+        int currentHour = 100;
+        if (!hour.equals("all")) {
+            currentHour = ViewFreeSpaces.hourInts.get(hour);
+        }
         int updateUntil = 20;
         if (currentHour<freeUntilInt) {
             updateUntil = freeUntilInt;

@@ -152,6 +152,9 @@ public class ViewFreeSpaces extends AppCompatActivity{
         for (int i = 0; i < classroomObjects.size(); i++) {
 //            classroomObjects.get(i).setFreeUntil("five");
             classroomObjects.get(i).setIcon(R.drawable.ic_home_black_24dp);
+            if (classroomObjects.get(i).getFreeUntil().equals("0")){
+                classroomObjects.get(i).setFreeUntil("All Day");
+            }
         }
 
 
@@ -181,12 +184,15 @@ public class ViewFreeSpaces extends AppCompatActivity{
     private void OccupyClassroom(final int position) {
         currentPosition = position;
         Calendar calendar = GregorianCalendar.getInstance();
-        final String hour = hourStrings.get(calendar.get(Calendar.HOUR_OF_DAY));
+        String hour = hourStrings.get(calendar.get(Calendar.HOUR_OF_DAY));
+        if (hour==null) {
+            hour="all";
+        }
         FirebaseDatabase db = FirebaseDatabase.getInstance("https://todaysclassrooms.firebaseio.com");
         /* Retrieves which classroom is being occupied */
-        final ClassroomObject occupiedClassroom = classroomObjects.get(position);
+        ClassroomObject occupiedClassroom = classroomObjects.get(position);
         /* Gets a reference to the correct hour that needs to be changed */
-        final DatabaseReference buildingRef = db.getReference().child(Integer.toString(occupiedClassroom.getBuilding()));
+        DatabaseReference buildingRef = db.getReference().child(Integer.toString(occupiedClassroom.getBuilding()));
         /* Gets a reference to the 'hours' field in the occupied classroom */
         DatabaseReference hoursRef = buildingRef.child(Integer.toString(occupiedClassroom.getClassroom()))
                 .child("hours");
@@ -232,7 +238,10 @@ public class ViewFreeSpaces extends AppCompatActivity{
         * in its list of free classrooms */
         //hoursRef.child(hour).setValue(9);
         //occupiedClassroom.setFreeUntil("two");
-        boolean occupied = finalCheckForClass(hourRef, hour, value[0]);
+        boolean occupied = false;
+        if (!hour.equals("all")) {
+            occupied = finalCheckForClass(hourRef, hour, value[0]);
+        }
         if (!occupied){
             updateHoursInDB(occupiedClassroom, hoursRef, hour);
             //classroomObjects.get(currentPosition).TEST_CHANGE("OCCUPIED");
@@ -246,7 +255,9 @@ public class ViewFreeSpaces extends AppCompatActivity{
             editor.putInt("Class", occupiedClassroom.getClassroom());
             editor.putString("Freeuntil", occupiedClassroom.getFreeUntil());
             editor.apply();
-            scheduleNotification(getApplicationContext(), hourInts.get(occupiedClassroom.getFreeUntil())-1);
+            if (!occupiedClassroom.getFreeUntil().equals("All Day")) {
+                scheduleNotification(getApplicationContext(), hourInts.get(occupiedClassroom.getFreeUntil()) - 1);
+            }
             Intent intent = new Intent(getApplicationContext(), MyClass.class);
             startActivity(intent);
         } else {
@@ -303,6 +314,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
         hourStrings.put(10, "ten");
         hourStrings.put(11, "eleven");
         hourStrings.put(12, "twelve");
+        hourStrings.put(0, "all");
 
         hourInts.put("one",13);
         hourInts.put("two", 14);
@@ -316,6 +328,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
         hourInts.put("ten", 10);
         hourInts.put("eleven", 11);
         hourInts.put("twelve", 12);
+        hourInts.put("all", 0);
         //TODO: Finish adding...
 
 
@@ -380,10 +393,13 @@ public class ViewFreeSpaces extends AppCompatActivity{
     private void updateHoursInDB(ClassroomObject occupiedClassroom, DatabaseReference hoursRef, String hour){
         String freeUntil = occupiedClassroom.getFreeUntil();
         int freeUntilInt = 0;
-        if (!freeUntil.equals("0")){
+        int firstHour = 100;
+        if (!freeUntil.equals("All Day")){
             freeUntilInt = hourInts.get(freeUntil);
         }
-        int firstHour = hourInts.get(hour);
+        if (!hour.equals("all")){
+            firstHour = hourInts.get(hour);
+        }
         int updateUntil = 20;
         if (firstHour<freeUntilInt) {
             updateUntil = freeUntilInt;

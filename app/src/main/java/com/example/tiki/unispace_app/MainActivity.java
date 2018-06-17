@@ -22,11 +22,15 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
-
+/**
+ * Main activity, first activity to be displayed when application
+ * loads
+ */
 public class MainActivity extends AppCompatActivity{
 
     private SharedPreferences sharedPreferences;
     GridLayout mainGrid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +41,12 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
+    /**
+     * Sets listeners for each button on home screen
+     */
     public void setOnClickListeners() {
 
         CardView item = (CardView)findViewById(R.id.all_classrooms_item);
-
         item.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity{
                     enableStrictMode();
                     openActivity(view, "ALL");
                 } else {
+                    // user cannot occupy more than one classroom at a time
                     Toast.makeText(MainActivity.this, "User Can't take more than one class", Toast.LENGTH_LONG).show();
                 }
             }
@@ -77,7 +84,6 @@ public class MainActivity extends AppCompatActivity{
                 if (sharedPreferences.getAll().isEmpty()) {
                     Intent intent = new Intent(getApplicationContext(), LocationActivity.class);
                     startActivity(intent);
-//                    openActivity(view, "location");
                 } else {
                     Toast.makeText(MainActivity.this, "User Can't take more than one class", Toast.LENGTH_LONG).show();
                 }
@@ -97,61 +103,14 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-
-/*
-        TextView item2 = (TextView)findViewById(R.id.textView5);
-        item2.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                enableStrictMode();
-                openActivity(view, "ALL");
-            }
-        });
-
-        item2 = (TextView)findViewById(R.id.textView3);
-        item2.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sharedPreferences = getSharedPreferences("My Class",MODE_PRIVATE);
-                if (sharedPreferences.getAll().isEmpty()){
-                    LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View container = (View) layoutInflater.inflate(R.layout.class_warning,null);
-                    final PopupWindow popupWindow = new PopupWindow(container, RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    if (Build.VERSION.SDK_INT>=21){
-                        popupWindow.setElevation(5.0f);
-                    }
-
-                    ImageButton closeButton = (ImageButton) container.findViewById(R.id.ib_close);
-                    setContentView(R.layout.class_warning);
-                    TextView textView = (TextView) findViewById(R.id.warn_txt);
-                    textView.setText("You have no classroom");
-                    closeButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // Dismiss the popup window
-                            popupWindow.dismiss();
-                            Intent intent = new Intent(getIntent());
-                            finish();
-                            startActivity(intent);
-                        }
-                    });
-                    setContentView(R.layout.activity_main);
-                    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.container);
-                    popupWindow.showAtLocation(linearLayout, Gravity.CENTER, 0, 0);
-                }else {
-                    Intent intent = new Intent(getApplicationContext(), MyClass.class);
-                    startActivity(intent);
-                }
-
-            }
-        });
-*/
-
     }
 
 
+    /**
+     * Opens a new activiy
+     * @param view which view to use
+     * @param request user request if neccessary
+     */
     public void openActivity(View view, String request) {
         Intent intent = new Intent(this, ViewFreeSpaces.class);
         intent.putExtra(Intent.EXTRA_TEXT, request);
@@ -165,6 +124,9 @@ public class MainActivity extends AppCompatActivity{
         StrictMode.setThreadPolicy(policy);
     }
 
+    /**
+     * Returns to previous activity when user presses back on phone
+     */
     @Override
     public void onBackPressed(){
         Intent intent = new Intent(Intent.ACTION_MAIN);

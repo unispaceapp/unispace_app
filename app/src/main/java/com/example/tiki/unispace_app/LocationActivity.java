@@ -31,9 +31,8 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+        // REQUESTS PERMISSION TO USE USER GPS IF NOT ALREADY ACTIVATED
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        /*textView = (TextView)findViewById(R.id.lat);
-        button = (Button)findViewById(R.id.GetLocation);*/
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
@@ -45,12 +44,12 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
             startActivity(intent);
 
         }
-        //button.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View view) {
+        // REQUESTS PERMISSION TO USE USER GPS IF NOT ALREADY ACTIVATED
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
@@ -65,7 +64,12 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
+    /**
+     * Gets location of user
+     * @return location of user
+     */
     private Location getLocation() {
+        // REQUESTS PERMISSION TO USE USER GPS IF NOT ALREADY ACTIVATED
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                 (this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -84,9 +88,6 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 double longi = location.getLongitude();
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
-
-//                textView.setText("Your current location is" + "\n" + "Lattitude = " + lattitude
-//                        + "\n" + "Longitude = " + longitude);
                 return location;
 
             } else if (location1 != null) {
@@ -94,9 +95,6 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 double longi = location1.getLongitude();
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
-
-//                textView.setText("Your current location is" + "\n" + "Lattitude = " + lattitude
-//                        + "\n" + "Longitude = " + longitude);
                 return location1;
 
             } else if (location2 != null) {
@@ -104,14 +102,10 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 double longi = location2.getLongitude();
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
-
-//                textView.setText("Your current location is" + "\n" + "Lattitude = " + lattitude
-//                        + "\n" + "Longitude = " + longitude);
-//                String url = "https://iradivi.com/test/?latitude=" + lattitude + "&longitude=" + longitude;
                 return location2;
 
             } else {
-
+                //If cannot find user's location, displays error message
                 Toast.makeText(this, "Unble to Trace your location", Toast.LENGTH_SHORT).show();
 
             }
@@ -119,6 +113,9 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
         return null;
     }
 
+    /**
+     * Informs the user that they must activate their GPS services
+     */
     protected void buildAlertMessageNoGps() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -131,7 +128,6 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        //dialog.cancel();
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     }
                 });

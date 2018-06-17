@@ -45,6 +45,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Activity that displays all the free classrooms returned from server
+ */
 public class ViewFreeSpaces extends AppCompatActivity{
 
     private FirebaseHandler firebaseHandler;
@@ -58,12 +61,6 @@ public class ViewFreeSpaces extends AppCompatActivity{
     public static Map<String, Integer> hourInts = new HashMap<>();
     private int currentPosition;
     private ArrayList<Integer> deletePositions = new ArrayList<>();
-
-    private LocationRequest mLocationRequest;
-    private boolean mRequestinglocationUpdates = false;
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
-
     private PopupWindow popupWindow;
     private LayoutInflater layoutInflater;
     private RelativeLayout relativeLayout;
@@ -83,13 +80,15 @@ public class ViewFreeSpaces extends AppCompatActivity{
         classroomObjects = new ArrayList<>();
         Intent intent = getIntent();
         String request = intent.getStringExtra(Intent.EXTRA_TEXT);
+        //User wants to get all classrooms
         if (request.equals("ALL")) {
             classroomObjects = firebaseHandler.GetAllClassrooms();
-            //TODO parse request
+        //User wants to get classroom by building
         } else if (request.contains("building")) {
             classroomObjects = firebaseHandler.GetClassroomsByBuilding(Integer.parseInt(request));
 
         } else {
+            //User wants the nearest classroom to their location
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location location = new Gson().fromJson(request, Location.class);
             classroomObjects = firebaseHandler.GetNearestClassrooms(location);
@@ -99,7 +98,6 @@ public class ViewFreeSpaces extends AppCompatActivity{
         if (classroomObjects.size()==0){
             layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
             View container = (View) layoutInflater.inflate(R.layout.class_warning,null);
-            //popupWindow = new PopupWindow(container,700, 700,true);
             popupWindow = new PopupWindow(container, RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
             if (Build.VERSION.SDK_INT>=21){
                 popupWindow.setElevation(5.0f);
@@ -113,15 +111,8 @@ public class ViewFreeSpaces extends AppCompatActivity{
                 public void onClick(View view) {
                     // Dismiss the popup window
                     popupWindow.dismiss();
-                   // mAdapter.notifyItemRemoved(currentPosition);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
-//                    deletePositions.add(position);
-//                    Bundle b = new Bundle();
-//                    b.putIntegerArrayList("Positions", deletePositions);
-//                    intent.putExtras(b);
-//                    finish();
-//                    startActivity(intent);
                 }
             });
             setContentView(R.layout.activity_view_free_spaces);
@@ -133,8 +124,8 @@ public class ViewFreeSpaces extends AppCompatActivity{
             });
         }
 
+        //Sets the free until and icon of classroom
         for (int i = 0; i < classroomObjects.size(); i++) {
-//            classroomObjects.get(i).setFreeUntil("five");
             classroomObjects.get(i).setIcon(R.drawable.ic_home_black_24dp);
             if (classroomObjects.get(i).getFreeUntil().equals("0")){
                 classroomObjects.get(i).setFreeUntil("All Day");
@@ -151,6 +142,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
                 classroomObjects.remove(deletePositions.get(i).intValue());
             }
         }
+        //adds object to recycler view
         mAdapter = new ClassAdapter(classroomObjects);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -187,9 +179,7 @@ public class ViewFreeSpaces extends AppCompatActivity{
         ValueEventListener hourListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               System.out.println("***********************" + dataSnapshot.getValue(Integer.class));
                value[0] = dataSnapshot.getValue(Integer.class);
-               System.out.println("In data changed");
             }
 
             @Override
@@ -201,18 +191,13 @@ public class ViewFreeSpaces extends AppCompatActivity{
         /* Now in Firebase the value is 1 and therefore
         * next user will not have this classroom included
         * in its list of free classrooms */
-        //hoursRef.child(hour).setValue(9);
-        //occupiedClassroom.setFreeUntil("two");
         boolean occupied = false;
         if (!hour.equals("all")) {
             occupied = finalCheckForClass(hourRef, hour, value[0]);
         }
         if (!occupied){
             updateHoursInDB(occupiedClassroom, hoursRef, hour);
-            //classroomObjects.remove(currentPosition);
-            //mAdapter.notifyItemRemoved(currentPosition);
             mAdapter.notifyItemChanged(position);
-            // TODO: TASK 8 (Open the new layout for classroom using occupied classroom info)
             SharedPreferences sharedPreferences = getSharedPreferences("My Class", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("Building", occupiedClassroom.getBuilding());
@@ -227,7 +212,6 @@ public class ViewFreeSpaces extends AppCompatActivity{
         } else {
             layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
             View container = (View) layoutInflater.inflate(R.layout.class_warning,null);
-            //popupWindow = new PopupWindow(container,700, 700,true);
             popupWindow = new PopupWindow(container, RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
             if (Build.VERSION.SDK_INT>=21){
                 popupWindow.setElevation(5.0f);
@@ -256,6 +240,10 @@ public class ViewFreeSpaces extends AppCompatActivity{
 
 
     }
+
+    /**
+     * Initializes the hours
+     */
     private void InitializeMembers() {
 
 
@@ -286,7 +274,6 @@ public class ViewFreeSpaces extends AppCompatActivity{
         hourInts.put("eleven", 11);
         hourInts.put("twelve", 12);
         hourInts.put("all", 0);
-        //TODO: Finish adding...
 
 
         ArrayList l = new ArrayList();
@@ -347,6 +334,13 @@ public class ViewFreeSpaces extends AppCompatActivity{
         StrictMode.setThreadPolicy(policy);
     }
 
+    /**
+     * If a classroom is occupied, the classroom is updated in database in
+     * the firebase to be occupied from now until next lesson
+     * @param occupiedClassroom which classroom is being occupied
+     * @param hoursRef the hours of the classrom
+     * @param hour current hour
+     */
     private void updateHoursInDB(ClassroomObject occupiedClassroom, DatabaseReference hoursRef, String hour){
         String freeUntil = occupiedClassroom.getFreeUntil();
         int freeUntilInt = 0;
@@ -367,6 +361,14 @@ public class ViewFreeSpaces extends AppCompatActivity{
         }
     }
 
+    /**
+     * Final check when a user wants to occupy a classroom that it hasnt been
+     * claimed by another user
+     * @param hourRef hours of classrom
+     * @param hour current hour
+     * @param value current value of current hour
+     * @return
+     */
     private boolean finalCheckForClass(DatabaseReference hourRef, String hour,  Integer value){
 
         final Integer[] val = new Integer[1];
@@ -374,12 +376,10 @@ public class ViewFreeSpaces extends AppCompatActivity{
         ValueEventListener hourListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("***********************" + dataSnapshot.getValue(Integer.class));
                 val[0] = dataSnapshot.getValue(Integer.class);
                 if(val[0] == 1) {
                     occupied[0] = true;
                 }
-                System.out.println("In data changed");
                 Toast.makeText(ViewFreeSpaces.this, "Value is " + val[0], Toast.LENGTH_LONG).show();
             }
 
@@ -389,20 +389,21 @@ public class ViewFreeSpaces extends AppCompatActivity{
             }
         };
         hourRef.addListenerForSingleValueEvent(hourListener);
-
-
-
-        return occupied[0];//(value[0].equals("0"));
+        return occupied[0];
     }
 
+    /**
+     * Sets a notification to be sent 10 minutes before the next lesson
+     * is scheduled in the user's classroom
+     * @param context
+     * @param hour
+     */
     private void scheduleNotification(Context context, int hour){
         Notification.Builder builder = new Notification.Builder(context);
         builder.setContentTitle("Time's up");
         builder.setContentText("You have left 10 minutes in your current classroom");
         builder.setSmallIcon(R.mipmap.unispace_logo);
-
         Notification notification = builder.build();
-
         Intent notificationIntent = new Intent(context, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
@@ -418,12 +419,3 @@ public class ViewFreeSpaces extends AppCompatActivity{
     }
 
 }
-
-
-
-                /*DatabaseReference room = building.child(Integer.toString(occupiedClassroom.getClassroom()));
-                DatabaseReference hours = room.child("hours");
-                int time = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)-3;
-                DatabaseReference hour = hours.child(hoursMap.get(time).get(1)).child(hoursMap.get(time).get(0));
-                hour.setValue("1");*/
-

@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * Allows user to search for classrooms in a specific building
+ */
 public class SearchActivity extends AppCompatActivity  implements TextWatcher{
     private ArrayList buildings = new ArrayList();
 
@@ -28,19 +31,9 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher{
         init();
         EditText searcher = (EditText)findViewById(R.id.building);
         searcher.addTextChangedListener(this);
-//        Button buildingButton = (Button)findViewById(R.id.search);
-//        buildingButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), ViewFreeSpaces.class);
-//                EditText et = (EditText)findViewById(R.id.building);
-//                String wantedBuilding = et.getText().toString();
-//                intent.putExtra(Intent.EXTRA_TEXT, "BUILDING" + wantedBuilding);
-//                startActivity(intent);
-//            }
-//        });
         GridLayout grid = (GridLayout) findViewById(R.id.mainGrid);
         int count = grid.getChildCount();
+        // SETS LISTENERS FOR EACH NUMBER IN DIAL PAD
         for(int child = 0; child < 9; child++) {
             final CardView dial = (CardView)grid.getChildAt(child);
             final int c = child +1;
@@ -61,13 +54,10 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher{
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             v.setElevation(0);
                         }
-                        //v.setBackgroundColor(getResources().getColor(R.color.main_green));
                     } else {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             v.setElevation(10);
                         }
-                        //v.setBackgroundColor(getResources().getColor(R.color.main_green));
-
                     }
 
                 }
@@ -80,9 +70,6 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher{
             public void onClick(View view) {
                 EditText et = (EditText)findViewById(R.id.building);
                 et.setText("");
-
-
-
             }
         });
 
@@ -92,9 +79,6 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher{
             public void onClick(View view) {
                 EditText et = (EditText)findViewById(R.id.building);
                 et.append(Integer.toString(0));
-
-
-
             }
         });
         dial = (CardView)grid.getChildAt(11);
@@ -140,8 +124,10 @@ public class SearchActivity extends AppCompatActivity  implements TextWatcher{
     }
 
 
-
-
+    /**
+     * Initializes building numbers so the user knows if the building exists
+     * or not
+     */
     private void init() {
         buildings.add("100");
         buildings.add("101");

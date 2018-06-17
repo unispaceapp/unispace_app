@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ * Class that contains the User's classroom they are
+ * currently occupying
+ */
 public class MyClass extends Activity {
 
     ArrayList<ClassroomObject> classroomObjects;
@@ -77,6 +81,9 @@ public class MyClass extends Activity {
         });
     }
 
+    /**
+     * Releases the User's current classroom
+     */
     private void freeClass() {
         Calendar calendar = GregorianCalendar.getInstance();
         String hour =  ViewFreeSpaces.hourStrings.get(calendar.get(Calendar.HOUR_OF_DAY));
@@ -89,8 +96,6 @@ public class MyClass extends Activity {
         /* Gets a reference to the 'hours' field in the occupied classroom */
         DatabaseReference hoursRef = buildingRef.child(Integer.toString(classroom))
                 .child("hours");
-        //hoursRef.child(hour).setValue(0);
-
         if (freeuntil.equals("All Day")){
             freeuntil="all";
         }
@@ -109,6 +114,10 @@ public class MyClass extends Activity {
         }
     }
 
+    /**
+     * Cancels notification that is sent if the classroom
+     * is 10 minutes away from it's next lesson
+     */
     private void cancelNotification(){
         NotificationManager nm = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
         if (nm!=null) {

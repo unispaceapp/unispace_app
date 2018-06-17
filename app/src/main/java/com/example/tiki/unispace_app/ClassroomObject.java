@@ -1,5 +1,9 @@
 package com.example.tiki.unispace_app;
 
+
+/**
+ * Java object to contain all information of a classroom
+ */
 public class ClassroomObject {
 
     private int classroom;

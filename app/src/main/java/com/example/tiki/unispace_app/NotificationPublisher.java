@@ -6,6 +6,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+/**
+ * Class in charge of sending notifications to notify
+ * user that their classroom soon has a lesson inside
+ */
 public class NotificationPublisher extends BroadcastReceiver {
     public static String NOTIFICATION_ID = "notification_id";
     public static String NOTIFICATION = "notification";

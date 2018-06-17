@@ -80,24 +80,39 @@ public class ViewFreeSpaces extends AppCompatActivity{
         classroomObjects = new ArrayList<>();
         Intent intent = getIntent();
         String request = intent.getStringExtra(Intent.EXTRA_TEXT);
-        //User wants to get all classrooms
         if (request.equals("ALL")) {
-            classroomObjects = firebaseHandler.GetAllClassrooms();
-        //User wants to get classroom by building
+            try {
+                classroomObjects = firebaseHandler.GetAllClassrooms();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //TODO parse request
         } else if (request.contains("building")) {
-            classroomObjects = firebaseHandler.GetClassroomsByBuilding(Integer.parseInt(request));
-
+            try {
+                classroomObjects = firebaseHandler.GetClassroomsByBuilding(request);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
-            //User wants the nearest classroom to their location
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location location = new Gson().fromJson(request, Location.class);
-            classroomObjects = firebaseHandler.GetNearestClassrooms(location);
-
+            try {
+                classroomObjects = firebaseHandler.GetNearestClassrooms(location);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         if (classroomObjects.size()==0){
             layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
             View container = (View) layoutInflater.inflate(R.layout.class_warning,null);
+            //popupWindow = new PopupWindow(container,700, 700,true);
             popupWindow = new PopupWindow(container, RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
             if (Build.VERSION.SDK_INT>=21){
                 popupWindow.setElevation(5.0f);
@@ -111,8 +126,15 @@ public class ViewFreeSpaces extends AppCompatActivity{
                 public void onClick(View view) {
                     // Dismiss the popup window
                     popupWindow.dismiss();
+                   // mAdapter.notifyItemRemoved(currentPosition);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
+//                    deletePositions.add(position);
+//                    Bundle b = new Bundle();
+//                    b.putIntegerArrayList("Positions", deletePositions);
+//                    intent.putExtras(b);
+//                    finish();
+//                    startActivity(intent);
                 }
             });
             setContentView(R.layout.activity_view_free_spaces);
@@ -124,8 +146,8 @@ public class ViewFreeSpaces extends AppCompatActivity{
             });
         }
 
-        //Sets the free until and icon of classroom
         for (int i = 0; i < classroomObjects.size(); i++) {
+//            classroomObjects.get(i).setFreeUntil("five");
             classroomObjects.get(i).setIcon(R.drawable.ic_home_black_24dp);
             if (classroomObjects.get(i).getFreeUntil().equals("0")){
                 classroomObjects.get(i).setFreeUntil("All Day");
@@ -142,7 +164,6 @@ public class ViewFreeSpaces extends AppCompatActivity{
                 classroomObjects.remove(deletePositions.get(i).intValue());
             }
         }
-        //adds object to recycler view
         mAdapter = new ClassAdapter(classroomObjects);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -179,7 +200,9 @@ public class ViewFreeSpaces extends AppCompatActivity{
         ValueEventListener hourListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+               System.out.println("***********************" + dataSnapshot.getValue(Integer.class));
                value[0] = dataSnapshot.getValue(Integer.class);
+               System.out.println("In data changed");
             }
 
             @Override
@@ -191,12 +214,16 @@ public class ViewFreeSpaces extends AppCompatActivity{
         /* Now in Firebase the value is 1 and therefore
         * next user will not have this classroom included
         * in its list of free classrooms */
+        //hoursRef.child(hour).setValue(9);
+        //occupiedClassroom.setFreeUntil("two");
         boolean occupied = false;
         if (!hour.equals("all")) {
             occupied = finalCheckForClass(hourRef, hour, value[0]);
         }
         if (!occupied){
             updateHoursInDB(occupiedClassroom, hoursRef, hour);
+            //classroomObjects.remove(currentPosition);
+            //mAdapter.notifyItemRemoved(currentPosition);
             mAdapter.notifyItemChanged(position);
             SharedPreferences sharedPreferences = getSharedPreferences("My Class", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();

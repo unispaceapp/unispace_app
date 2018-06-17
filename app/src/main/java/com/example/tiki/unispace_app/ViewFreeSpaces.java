@@ -126,15 +126,8 @@ public class ViewFreeSpaces extends AppCompatActivity{
                 public void onClick(View view) {
                     // Dismiss the popup window
                     popupWindow.dismiss();
-                   // mAdapter.notifyItemRemoved(currentPosition);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
-//                    deletePositions.add(position);
-//                    Bundle b = new Bundle();
-//                    b.putIntegerArrayList("Positions", deletePositions);
-//                    intent.putExtras(b);
-//                    finish();
-//                    startActivity(intent);
                 }
             });
             setContentView(R.layout.activity_view_free_spaces);
@@ -147,7 +140,6 @@ public class ViewFreeSpaces extends AppCompatActivity{
         }
 
         for (int i = 0; i < classroomObjects.size(); i++) {
-//            classroomObjects.get(i).setFreeUntil("five");
             classroomObjects.get(i).setIcon(R.drawable.ic_home_black_24dp);
             if (classroomObjects.get(i).getFreeUntil().equals("0")){
                 classroomObjects.get(i).setFreeUntil("All Day");
@@ -214,16 +206,12 @@ public class ViewFreeSpaces extends AppCompatActivity{
         /* Now in Firebase the value is 1 and therefore
         * next user will not have this classroom included
         * in its list of free classrooms */
-        //hoursRef.child(hour).setValue(9);
-        //occupiedClassroom.setFreeUntil("two");
         boolean occupied = false;
         if (!hour.equals("all")) {
             occupied = finalCheckForClass(hourRef, hour, value[0]);
         }
         if (!occupied){
             updateHoursInDB(occupiedClassroom, hoursRef, hour);
-            //classroomObjects.remove(currentPosition);
-            //mAdapter.notifyItemRemoved(currentPosition);
             mAdapter.notifyItemChanged(position);
             SharedPreferences sharedPreferences = getSharedPreferences("My Class", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
